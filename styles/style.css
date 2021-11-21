@@ -132,3 +132,57 @@ input {
   display: table;
   clear: both;
 }
+
+.theme-changer-container{
+    display: flex;
+}
+.theme-changer{
+    margin: 8px 16px; /* top/bottom || left/right */
+    display: inline-block;
+    font-family: var(--font);
+    font-size: 1rem;
+    color: var(--color6);
+    background-color: var(--background);
+    border-width: 1px;
+    border-color: var(--color12);
+    border-style: solid;
+    height: 35px;
+    width: 302px;
+    overflow: hidden;
+    transition: 0.2s ease-in-out;
+}
+
+/* Some scroll customization */
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--cursor);
+    border-radius: 8px;
+} 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color6); 
+}
+.theme-changer:hover{
+    height: 200px;
+    overflow-y: scroll;
+}
+/* ---------------------- */
+
+.theme-changer input{ /* hide radio-button */
+    border:none;
+    appearance: none;
+    position: absolute;
+}
+.theme-changer label{
+    cursor: pointer;
+    display: block;
+    padding: 4px;   
+}
+.theme-changer label:hover{
+  color: var(--color12);
+}
