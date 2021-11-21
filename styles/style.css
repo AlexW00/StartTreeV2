@@ -176,6 +176,7 @@ input {
 .theme-changer input{ /* hide radio-button */
     border:none;
     appearance: none;
+    -webkit-appearance: none;
     position: absolute;
 }
 .theme-changer label{
