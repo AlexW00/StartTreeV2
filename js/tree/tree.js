@@ -1,4 +1,5 @@
 import ThemeChanger from "../themechanger/theme-changer.js";
+import SearchBar from "./searchBar.js";
 import TreeColumn from "./treeColumn.js";
 
 // ====================================================== //
@@ -30,8 +31,11 @@ export default class Tree {
       const treeColumn = new TreeColumn(bookmarkColumn);
       row.appendChild(treeColumn.html());
     });
-
     container.appendChild(row);
+
+    const searchBar = new SearchBar(2);
+    container.appendChild(searchBar.html());
+
     const themeChanger = new ThemeChanger();
     container.appendChild(themeChanger.html());
 

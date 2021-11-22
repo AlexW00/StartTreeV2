@@ -34,14 +34,15 @@ export default class ThemeChanger {
 
   html() {
     const root = document.createElement("div");
+    root.classList.add("prompt");
 
-    const themePrompt = document.createElement("span");
-    themePrompt.innerHTML = "~";
+    const sectionName = document.createElement("div");
+    sectionName.innerHTML = "~";
     const themeSpan = document.createElement("span");
-    themeSpan.innerHTML = "λ";
-    themePrompt.appendChild(themeSpan);
-    themePrompt.innerHTML += "theme";
-    root.appendChild(themePrompt);
+    themeSpan.innerHTML = " Ξ ";
+    sectionName.appendChild(themeSpan);
+    sectionName.innerHTML += "theme";
+    root.appendChild(sectionName);
 
     const themeChangerContainer = document.createElement("div");
     themeChangerContainer.classList.add("theme-changer-container");
