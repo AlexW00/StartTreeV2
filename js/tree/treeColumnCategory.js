@@ -1,9 +1,15 @@
 import TreeItem from "./treeItem.js";
+
+// ====================================================== //
+// ================= TreeColumnCategory ================= //
+// ====================================================== //
+
 export default class TreeColumnCategory {
   constructor(bookmarkCategory) {
     this.bookmarkCategory = bookmarkCategory;
   }
 
+  // returns a bookmark category with all bookmarks of that category
   html() {
     const column = document.createElement("li");
 

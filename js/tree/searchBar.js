@@ -1,3 +1,7 @@
+// ====================================================== //
+// ====================== SearchBar ===================== //
+// ====================================================== //;
+
 export default class SearchBar {
   // either 1 for Google or 2 for DuckDuckGo
   constructor(engine) {
@@ -10,6 +14,7 @@ export default class SearchBar {
     }
   }
 
+  // returns the search bar html
   html = () => {
     const root = document.createElement("div");
     root.classList.add("prompt");
