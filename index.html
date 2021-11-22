@@ -3,6 +3,7 @@
  <head>
   <meta charset="utf-8"/>
   <link href="./styles/style.css" rel="stylesheet" type="text/css"/>
+  <link href="./styles/colors.css" rel="stylesheet" type="text/css"/>  
   <title>
    Home
   </title>
@@ -170,9 +171,100 @@
     </h1>
     <input autofocus="autofocus" id="search" name="q" type="text"/>
    </form>
+   <div class="prompt">
+    ~
+    <span>
+     γ
+    </span>
+    theme
+   </div>
+   <div class="theme-changer-container">
+    <h1>
+        theme:
+       </h1>
+<div class="theme-changer">  
+    
+    <input type="radio" name="theme-radio" id="black-ice"
+    onclick="changeTheme('black-ice')"/>
+    <label for="black-ice">black-ice</label>
+ 
+    <input type="radio" name="theme-radio" id="carnival"
+    onclick="changeTheme('carnival')"/>
+    <label for="carnival">carnival</label>
+ 
+    <input type="radio" name="theme-radio" id="cotton-candy"
+    onclick="changeTheme('cotton-candy')"/>
+    <label for="cotton-candy">cotton-candy</label>
+ 
+    <input type="radio" name="theme-radio" id="desert-sky"
+    onclick="changeTheme('desert-sky')"/>
+    <label for="desert-sky">desert-sky</label>
+ 
+    <input type="radio" name="theme-radio" id="ferns"
+    onclick="changeTheme('ferns')"/>
+    <label for="ferns">ferns</label>
+
+    <input type="radio" name="theme-radio" id="forest"
+    onclick="changeTheme('forest')"/>
+    <label for="forest">forest</label>
+    
+    <input type="radio" name="theme-radio" id="intrigue"
+    onclick="changeTheme('intrigue')"/>
+    <label for="intrigue">intrigue</label>
+            
+    <input type="radio" name="theme-radio" id="just-red"
+    onclick="changeTheme('just-red')"/>
+    <label for="just-red">just-red</label>
+    
+    
+    <input type="radio" name="theme-radio" id="neon-pink-dark"
+    onclick="changeTheme('neon-pink-dark')"/>
+    <label for="neon-pink-dark">neon-pink-dark</label>
+    
+    
+    <input type="radio" name="theme-radio" id="neon"
+    onclick="changeTheme('neon')"/>
+    <label for="neon">neon</label>
+    
+    
+    <input type="radio" name="theme-radio" id="orange-dark"
+    onclick="changeTheme('orange-dark')"/>
+    <label for="orange-dark">orange-dark</label>
+    
+    
+    <input type="radio" name="theme-radio" id="slick-red"
+    onclick="changeTheme('slick-red')"/>
+    <label for="slick-red">slick-red</label>
+    
+    
+    <input type="radio" name="theme-radio" id="this-ones-good"
+    onclick="changeTheme('this-ones-good')"/>
+    <label for="this-ones-good">this-ones-good</label>
+    
+    
+    <input type="radio" name="theme-radio" id="tomorrow-night-eighties"
+    onclick="changeTheme('tomorrow-night-eighties')"/>
+    <label for="tomorrow-night-eighties">tomorrow-night-eighties</label>
+    
+    
+    <input type="radio" name="theme-radio" id="void"
+    onclick="changeTheme('void')"/>
+    <label for="void">void</label>
+    
+    
+    <input type="radio" name="theme-radio" id="water-fire"
+    onclick="changeTheme('water-fire')"/>
+    <label for="water-fire">water-fire</label>
+    
+
+ 
+ </div>   
+</div>
   </div>
   <script type="text/javascript">
    document.getElementById("search").focus();
   </script>
+  <script src="./js/theme-changer.js"></script>
+
  </body>
 </html>
