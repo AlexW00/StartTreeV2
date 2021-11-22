@@ -1,3 +1,8 @@
-import ThemeChanger from "./themechanger/theme-changer.js";
+import Tree from "./tree/tree.js";
 
-const themeChanger = new ThemeChanger();
+const exampleData = await fetch("js/tree/exampleConfig.json").then((response) =>
+  response.json()
+);
+
+const t = new Tree(exampleData);
+document.body.appendChild(t.html());
