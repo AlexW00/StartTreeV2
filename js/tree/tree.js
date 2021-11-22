@@ -7,8 +7,9 @@ import TreeColumn from "./treeColumn.js";
 // ====================================================== //
 
 export default class Tree {
-  constructor(bookmarkColumns) {
-    this.bookmarkColumns = bookmarkColumns;
+  constructor(config) {
+    this.bookmarkColumns = config.bmc;
+    this.searchEngine = config.s;
   }
 
   // returns a div of class "container", containing the entire bookmark tree
@@ -33,7 +34,7 @@ export default class Tree {
     });
     container.appendChild(row);
 
-    const searchBar = new SearchBar(2);
+    const searchBar = new SearchBar(this.searchEngine);
     container.appendChild(searchBar.html());
 
     const themeChanger = new ThemeChanger();

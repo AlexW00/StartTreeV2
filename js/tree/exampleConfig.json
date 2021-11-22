@@ -1,58 +1,61 @@
-[
-  [
-    {
-      "name": "column in row 1 name",
-      "bookmarks": [
-        {
-          "name": "bm1",
-          "url": "http://www.google.com"
-        },
-        {
-          "name": "bm2",
-          "url": "http://www.google.com"
-        }
-      ]
-    },
-    {
-      "name": "column in row 1 name",
-      "bookmarks": [
-        {
-          "name": "bm3",
-          "url": "http://www.google.com"
-        },
-        {
-          "name": "bm4",
-          "url": "http://www.google.com"
-        }
-      ]
-    }
-  ],
-  [
-    {
-      "name": "column in row 2 name",
-      "bookmarks": [
-        {
-          "name": "bm1",
-          "url": "http://www.google.com"
-        },
-        {
-          "name": "bm2",
-          "url": "http://www.google.com"
-        }
-      ]
-    },
-    {
-      "name": "column in row 2 name",
-      "bookmarks": [
-        {
-          "name": "bm3",
-          "url": "http://www.google.com"
-        },
-        {
-          "name": "bm4",
-          "url": "http://www.google.com"
-        }
-      ]
-    }
+{
+  "s": 1,
+  "bmc": [
+    [
+      {
+        "cn": "column in row 1 n",
+        "b": [
+          {
+            "n": "bm1",
+            "u": "http://www.google.com"
+          },
+          {
+            "n": "bm2",
+            "u": "http://www.google.com"
+          }
+        ]
+      },
+      {
+        "cn": "column in row 1 n",
+        "b": [
+          {
+            "n": "bm3",
+            "u": "http://www.google.com"
+          },
+          {
+            "n": "bm4",
+            "u": "http://www.google.com"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "cn": "column in row 2 n",
+        "b": [
+          {
+            "n": "bm1",
+            "u": "http://www.google.com"
+          },
+          {
+            "n": "bm2",
+            "u": "http://www.google.com"
+          }
+        ]
+      },
+      {
+        "cn": "column in row 2 n",
+        "b": [
+          {
+            "n": "bm3",
+            "u": "http://www.google.com"
+          },
+          {
+            "n": "bm4",
+            "u": "http://www.google.com"
+          }
+        ]
+      }
+    ]
   ]
-]
+}

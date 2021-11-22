@@ -1,7 +1,7 @@
 export default class TreeItem {
   constructor(bookmark) {
-    this.name = bookmark.name;
-    this.url = bookmark.url;
+    this.name = bookmark.n;
+    this.url = bookmark.u;
   }
 
   html() {

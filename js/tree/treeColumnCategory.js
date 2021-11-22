@@ -8,11 +8,11 @@ export default class TreeColumnCategory {
     const column = document.createElement("li");
 
     const h1 = document.createElement("h1");
-    h1.innerHTML = this.bookmarkCategory.name;
+    h1.innerHTML = this.bookmarkCategory.cn;
     column.appendChild(h1);
 
     const ul = document.createElement("ul");
-    this.bookmarkCategory.bookmarks.forEach((bookmark) => {
+    this.bookmarkCategory.b.forEach((bookmark) => {
       ul.appendChild(new TreeItem(bookmark).html());
     });
 
