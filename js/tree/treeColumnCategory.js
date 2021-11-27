@@ -8,8 +8,9 @@ import Editor from "./edit/editor.js";
 
 export default class TreeColumnCategory {
   static count = 0;
-  constructor(bookmarkCategory, isEditing) {
+  constructor(bookmarkCategory, isEditing, onUpdate) {
     TreeColumnCategory.count++;
+    this.onUpdate = onUpdate;
     this.id = `category-${TreeColumnCategory.count}`;
     this.name = bookmarkCategory.cn;
     this.bookmarks = bookmarkCategory.b.map((bookmark) => {
@@ -27,6 +28,50 @@ export default class TreeColumnCategory {
     const h1 = document.createElement("h1");
     h1.innerHTML = this.name;
     column.appendChild(h1);
+
+    h1.addEventListener("click", (event) => {
+      const root = event.target.parentElement.parentElement;
+      console.log(this);
+      if (this.isEditing) {
+        const editor = new Editor(
+          root,
+          this,
+          ["cancel", "delete"],
+          {},
+          (event) => {
+            if (event.type === "save") {
+              this.name = event.editResult.text;
+              h1.innerHTML = this.name;
+              const html = this.html();
+              root.insertBefore(
+                html,
+                root.querySelectorAll(".category")[event.index]
+              );
+              this.onUpdate({
+                type: "save",
+                bookmarkCategory: this,
+                index: event.index,
+                html: html,
+              });
+            } else if (event.type === "close") {
+              const html = this.html();
+              root.insertBefore(
+                html,
+                root.querySelectorAll(".category")[event.index]
+              );
+              this.onUpdate({
+                type: "close",
+                bookmarkCategory: this,
+                index: event.index,
+                html: html,
+              });
+            } else if (event.type === "delete") {
+              this.onUpdate({ type: "delete", bookmarkCategory: this });
+            }
+          }
+        );
+      }
+    });
 
     const ul = document.createElement("ul");
     this.bookmarks.forEach((bookmark) => {
@@ -52,7 +97,7 @@ export default class TreeColumnCategory {
           ul,
           newBookmark,
           ["cancel", "link"],
-          true,
+          { openWithLinkInput: true },
           (event) => {
             if (event.type === "save") {
               newBookmark.name = event.editResult.text;

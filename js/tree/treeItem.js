@@ -17,6 +17,7 @@ export default class TreeItem {
   // returns a bookmark category item
   html() {
     const li = document.createElement("li");
+    li.classList.add("bookmark");
     li.setAttribute("id", this.id);
     const a = document.createElement("a");
     a.href = this.url;
@@ -31,12 +32,11 @@ export default class TreeItem {
           root,
           this,
           ["cancel", "delete", "link"],
-          true,
+          { openWithLinkInput: true },
           (event) => {
             if (event.type === "save") {
               this.name = event.editResult.text;
               this.url = event.editResult.link ?? "#";
-              console.log(event.editResult.index);
               root.insertBefore(
                 this.html(),
                 root.querySelectorAll("li")[event.index]

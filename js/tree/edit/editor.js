@@ -1,38 +1,45 @@
 import Button from "./button.js";
 import Toolbar from "./toolbar.js";
 export default class Editor {
-  constructor(parentNode, editTarget, buttons, openWithLinkInput, cb) {
+  constructor(parentNode, editTarget, buttons, options, cb) {
     this.cb = cb;
     this.buttons = buttons;
     this.parentNode = parentNode;
     this.editTarget = editTarget;
     this.text = editTarget.name;
     this.link = editTarget.url ?? "#";
-    this.linkEditorIsOpen = openWithLinkInput;
+    this.linkEditorIsOpen = options.openWithLinkInput ?? false;
+    this.allowTextEdit = options.allowTextEdit ?? true;
+    this.nodeType = options.nodeType ?? "li";
 
     // replace element with editor
 
+    console.log(parentNode.querySelectorAll("h1"));
     parentNode.replaceChild(
       this.html(),
       parentNode.querySelector("#" + editTarget.id)
     );
     // select all elements of parent node
 
-    const children = this.parentNode.querySelectorAll("li, .editor");
+    const children = this.parentNode.querySelectorAll(
+      ".column, .editor, .category, .bookmark"
+    );
     // loop over all
     for (let i = 0; i < children.length; i++) {
       if (children[i].classList.contains("editor")) this.index = i;
     }
+    console.log(this.index);
   }
 
   html() {
-    const li = document.createElement("li");
+    const li = document.createElement(this.nodeType);
     li.classList.add("editor");
 
     const firstRow = document.createElement("div");
     firstRow.classList.add("firstRow");
 
     // create input field
+
     const input = document.createElement("input");
     input.addEventListener("focusout", (event) => {
       console.log(document.activeElement);
@@ -50,6 +57,8 @@ export default class Editor {
         this.save();
       }
     });
+    if (!this.allowTextEdit) input.disabled = true;
+
     firstRow.appendChild(input);
 
     // create toolbar

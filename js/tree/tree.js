@@ -2,7 +2,6 @@ import ThemeChanger from "./themechanger/theme-changer.js";
 import SearchBar from "./searchBar.js";
 import TreeColumn from "./treeColumn.js";
 import Button from "./edit/button.js";
-import Editor from "./edit/editor.js";
 
 // ====================================================== //
 // ======================== Tree ======================== //
@@ -11,7 +10,7 @@ import Editor from "./edit/editor.js";
 export default class Tree {
   constructor(config, isEditing) {
     this.bookmarkColumns = config.bmc.map(
-      (column) => new TreeColumn(column, isEditing)
+      (column) => new TreeColumn(column, isEditing, this.#onColumnUpdate)
     );
     this.searchEngine = config.s;
     this.version = config.v || "0.0";
@@ -62,6 +61,17 @@ export default class Tree {
     }
 
     return container;
+  };
+
+  #onColumnUpdate = (event) => {
+    if (event.type === "delete") {
+      // remove the column from the tree by its id
+      const column = this.bookmarkColumns.find(
+        (column) => column.id === event.id
+      );
+      const index = this.bookmarkColumns.indexOf(column);
+      this.bookmarkColumns.splice(index, 1);
+    }
   };
 
   export() {
