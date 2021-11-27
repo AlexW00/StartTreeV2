@@ -1,12 +1,16 @@
 import TreeColumnCategory from "./treeColumnCategory.js";
 import Button from "./edit/button.js";
+import Editor from "./edit/editor.js";
 
 // ====================================================== //
 // ======================= TreeRow ====================== //
 // ====================================================== //
 
 export default class TreeColumn {
+  static count = 0;
   constructor(bookmarkColumn, isEditing) {
+    TreeColumn.count++;
+    this.id = `column-${TreeColumn.count}`;
     this.bookmarkCategories = bookmarkColumn.map((bookmarkCategory) => {
       return new TreeColumnCategory(bookmarkCategory, isEditing);
     });
@@ -17,6 +21,7 @@ export default class TreeColumn {
   html() {
     const column = document.createElement("div");
     column.classList.add("column");
+    column.setAttribute("id", this.id);
 
     const tree = document.createElement("div");
     tree.classList.add("tree");
@@ -26,24 +31,55 @@ export default class TreeColumn {
     tree.appendChild(h1);
 
     const ul = document.createElement("ul");
-    this.bookmarkCategories.forEach((bookmarkCategory, index) => {
-      let bmc;
-      // check if it's the last bookmark category, if yes, add a button
-      if (index != this.bookmarkCategories.length - 1) {
-        bmc = bookmarkCategory.html();
-      } else {
-        const addCategoryButton = new Button("add").html();
-        addCategoryButton.style.position = "absolute";
-        addCategoryButton.style.top = "1.5rem";
-        addCategoryButton.style.left = "-1rem";
-        bmc = bookmarkCategory.html(addCategoryButton);
-      }
-      ul.appendChild(bmc);
+    this.bookmarkCategories.forEach((bookmarkCategory) => {
+      ul.appendChild(bookmarkCategory.html());
     });
+
+    ul.lastElementChild.appendChild(this.#addButton(ul));
 
     tree.appendChild(ul);
 
     return column;
+  }
+
+  #addButton(ul) {
+    const addCategoryButton = new Button("add").html();
+    addCategoryButton.style.position = "absolute";
+    addCategoryButton.style.top = "1.5rem";
+    addCategoryButton.style.left = "-1rem";
+    addCategoryButton.addEventListener("click", () => {
+      const elements = ul.querySelectorAll("li.category");
+      elements[elements.length - 1].removeChild(addCategoryButton);
+      const newBookmarkCategory = new TreeColumnCategory(
+        { cn: "new category", b: [] },
+        this.isEditing
+      );
+      const newBookmarkCategoryHtml =
+        newBookmarkCategory.html(addCategoryButton);
+      ul.appendChild(newBookmarkCategoryHtml);
+
+      const editor = new Editor(
+        ul,
+        newBookmarkCategory,
+        ["cancel"],
+        false,
+        (event) => {
+          if (event.type === "save") {
+            // append new bookmark category to end of list and push to array
+            newBookmarkCategory.name = event.editResult.text;
+            const newBookmarkCategoryHtml = newBookmarkCategory.html();
+            this.bookmarkCategories.push(newBookmarkCategory);
+
+            ul.appendChild(newBookmarkCategoryHtml);
+            newBookmarkCategoryHtml.appendChild(addCategoryButton);
+          } else {
+            // re append the button
+            ul.lastElementChild.appendChild(addCategoryButton);
+          }
+        }
+      );
+    });
+    return addCategoryButton;
   }
 
   export() {

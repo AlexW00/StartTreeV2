@@ -11,8 +11,18 @@ export default class Editor {
     this.linkEditorIsOpen = openWithLinkInput;
 
     // replace element with editor
-    parentNode.removeChild(parentNode.querySelector("#" + editTarget.id));
-    parentNode.appendChild(this.html());
+
+    parentNode.replaceChild(
+      this.html(),
+      parentNode.querySelector("#" + editTarget.id)
+    );
+    // select all elements of parent node
+
+    const children = this.parentNode.querySelectorAll("li, .editor");
+    // loop over all
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].classList.contains("editor")) this.index = i;
+    }
   }
 
   html() {
@@ -57,19 +67,24 @@ export default class Editor {
     li.appendChild(firstRow);
     if (this.linkEditorIsOpen) this.#openLinkInput(li);
 
-    if (this.linkEditorIsOpen) return li;
+    return li;
   }
 
   save() {
     this.#remove();
-    this.cb({ type: "save", editResult: { text: this.text, link: this.link } });
+    this.cb({
+      type: "save",
+      editResult: { text: this.text, link: this.link },
+      index: this.index,
+    });
   }
 
   close() {
     this.#remove();
     this.cb({
       type: "close",
-      editResult: { text: this.text, link: this.link },
+      editResult: { text: this.text, link: this.link, index: this.index },
+      index: this.index,
     });
   }
 
@@ -77,7 +92,8 @@ export default class Editor {
     this.#remove();
     this.cb({
       type: "delete",
-      editResult: { text: this.text, link: this.link },
+      editResult: { text: this.text, link: this.link, index: this.index },
+      index: this.index,
     });
   }
 

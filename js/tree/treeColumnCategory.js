@@ -7,22 +7,22 @@ import Editor from "./edit/editor.js";
 // ====================================================== //
 
 export default class TreeColumnCategory {
+  static count = 0;
   constructor(bookmarkCategory, isEditing) {
+    TreeColumnCategory.count++;
+    this.id = `category-${TreeColumnCategory.count}`;
     this.name = bookmarkCategory.cn;
     this.bookmarks = bookmarkCategory.b.map((bookmark) => {
-      return new TreeItem(bookmark, isEditing);
+      return new TreeItem(bookmark, isEditing, this.#onBookmarkUpdate);
     });
     this.isEditing = isEditing;
   }
 
   // returns a bookmark category with all bookmarks of that category
-  html(appendPlus) {
+  html() {
     const column = document.createElement("li");
-
-    // appends the plus button if it is the last category of the tree
-    if (appendPlus && this.isEditing) {
-      column.appendChild(appendPlus);
-    }
+    column.setAttribute("id", this.id);
+    column.classList.add("category");
 
     const h1 = document.createElement("h1");
     h1.innerHTML = this.name;
@@ -42,7 +42,8 @@ export default class TreeColumnCategory {
         // creates new bookmark element
         const newBookmark = new TreeItem(
             { n: "new bookmark", u: "" },
-            this.isEditing
+            this.isEditing,
+            this.#onBookmarkUpdate
           ),
           newBookmarkHtml = newBookmark.html();
         ul.appendChild(newBookmarkHtml);
@@ -69,6 +70,13 @@ export default class TreeColumnCategory {
 
     return column;
   }
+
+  #onBookmarkUpdate = (event) => {
+    if (event.type === "delete") {
+      this.bookmarks.splice(this.bookmarks.indexOf(event.target), 1);
+      console.log(this.bookmarks);
+    }
+  };
 
   export() {
     return {

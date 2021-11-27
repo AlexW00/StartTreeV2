@@ -1,12 +1,13 @@
 // ====================================================== //
 // ====================== TreeItem ====================== //
 // ====================================================== //
-import Button from "./edit/button.js";
+import Editor from "./edit/editor.js";
 
 export default class TreeItem {
   static count = 0;
-  constructor(bookmark, isEditing) {
+  constructor(bookmark, isEditing, onUpdate) {
     TreeItem.count++;
+    this.onUpdate = onUpdate;
     this.id = `bookmark-${TreeItem.count}`;
     this.name = bookmark.n;
     this.url = bookmark.u;
@@ -21,6 +22,34 @@ export default class TreeItem {
     a.href = this.url;
     a.textContent = this.name;
     li.appendChild(a);
+    if (this.isEditing) {
+      li.addEventListener("click", (event) => {
+        event.preventDefault();
+        console.log(this);
+        const root = event.target.parentElement.parentElement;
+        const editor = new Editor(
+          root,
+          this,
+          ["cancel", "delete", "link"],
+          true,
+          (event) => {
+            if (event.type === "save") {
+              this.name = event.editResult.text;
+              this.url = event.editResult.link ?? "#";
+              console.log(event.editResult.index);
+              root.insertBefore(
+                this.html(),
+                root.querySelectorAll("li")[event.index]
+              );
+            } else if (event.type === "close") {
+              root.appendChild(this.html());
+            } else if (event.type === "delete") {
+              this.onUpdate({ type: "delete", bookmark: this });
+            }
+          }
+        );
+      });
+    }
     return li;
   }
 

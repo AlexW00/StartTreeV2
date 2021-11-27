@@ -2,6 +2,7 @@ import ThemeChanger from "./themechanger/theme-changer.js";
 import SearchBar from "./searchBar.js";
 import TreeColumn from "./treeColumn.js";
 import Button from "./edit/button.js";
+import Editor from "./edit/editor.js";
 
 // ====================================================== //
 // ======================== Tree ======================== //
@@ -30,14 +31,22 @@ export default class Tree {
     prompt.innerHTML += " tree";
     container.appendChild(prompt);
 
-    if (this.isEditing) {
-      const addColumnButton = new Button("add").html();
-      addColumnButton.addEventListener("click", () => {});
-      prompt.appendChild(addColumnButton);
-    }
-
     const row = document.createElement("div");
     row.classList.add("row");
+
+    if (this.isEditing) {
+      const addColumnButton = new Button("add").html();
+      addColumnButton.addEventListener("click", () => {
+        const newBookmarkColumn = new TreeColumn(
+          [{ cn: "new category", b: [] }],
+          this.isEditing
+        );
+        const newBookmarkColumnHtml = newBookmarkColumn.html(addColumnButton);
+        row.appendChild(newBookmarkColumnHtml);
+        this.bookmarkColumns.push(newBookmarkColumn);
+      });
+      prompt.appendChild(addColumnButton);
+    }
 
     this.bookmarkColumns.forEach((bookmarkColumn) => {
       row.appendChild(bookmarkColumn.html());
