@@ -1,17 +1,22 @@
 // ====================================================== //
 // ====================== TreeItem ====================== //
 // ====================================================== //
+import Button from "./edit/button.js";
 
 export default class TreeItem {
-  constructor(bookmark) {
+  constructor(bookmark, isEditing) {
     this.name = bookmark.n;
     this.url = bookmark.u;
+    this.isEditing = isEditing;
   }
 
   // returns a bookmark category item
   html() {
     const li = document.createElement("li");
-    li.innerHTML = `<a href="${this.url}">${this.name}</a>`;
+    const a = document.createElement("a");
+    a.href = this.url;
+    a.textContent = this.name;
+    li.appendChild(a);
     return li;
   }
 

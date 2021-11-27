@@ -31,8 +31,16 @@ body {
   z-index: 100;
 }
 
-#modeToggle .filling {
+.filling {
   fill: var(--color1);
+}
+
+.editButton {
+  background: none;
+}
+
+.editButton .icon {
+  /* TODO: center the icon horizontally and vertically */
 }
 
 .container {
