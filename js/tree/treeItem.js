@@ -14,4 +14,11 @@ export default class TreeItem {
     li.innerHTML = `<a href="${this.url}">${this.name}</a>`;
     return li;
   }
+
+  export() {
+    return {
+      n: this.name,
+      u: this.url,
+    };
+  }
 }

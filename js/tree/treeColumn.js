@@ -6,7 +6,9 @@ import TreeColumnCategory from "./treeColumnCategory.js";
 
 export default class TreeColumn {
   constructor(bookmarkColumn) {
-    this.bookmarkColumn = bookmarkColumn;
+    this.bookmarkCategories = bookmarkColumn.map((bookmarkCategory) => {
+      return new TreeColumnCategory(bookmarkCategory);
+    });
   }
 
   // Returns a
@@ -23,11 +25,17 @@ export default class TreeColumn {
     tree.appendChild(h1);
 
     const ul = document.createElement("ul");
-    this.bookmarkColumn.forEach((bookmarkCategory) => {
-      ul.appendChild(new TreeColumnCategory(bookmarkCategory).html());
+    this.bookmarkCategories.forEach((bookmarkCategory) => {
+      ul.appendChild(bookmarkCategory.html());
     });
 
     tree.appendChild(ul);
     return column;
+  }
+
+  export() {
+    return this.bookmarkCategories.map((bookmarkCategory) => {
+      return bookmarkCategory.export();
+    });
   }
 }

@@ -1,4 +1,4 @@
-import ThemeChanger from "../themechanger/theme-changer.js";
+import ThemeChanger from "./themechanger/theme-changer.js";
 import SearchBar from "./searchBar.js";
 import TreeColumn from "./treeColumn.js";
 
@@ -8,8 +8,9 @@ import TreeColumn from "./treeColumn.js";
 
 export default class Tree {
   constructor(config) {
-    this.bookmarkColumns = config.bmc;
+    this.bookmarkColumns = config.bmc.map((column) => new TreeColumn(column));
     this.searchEngine = config.s;
+    this.version = config.v || "0.0";
   }
 
   // returns a div of class "container", containing the entire bookmark tree
@@ -29,8 +30,7 @@ export default class Tree {
     row.classList.add("row");
 
     this.bookmarkColumns.forEach((bookmarkColumn) => {
-      const treeColumn = new TreeColumn(bookmarkColumn);
-      row.appendChild(treeColumn.html());
+      row.appendChild(bookmarkColumn.html());
     });
     container.appendChild(row);
 
@@ -42,4 +42,12 @@ export default class Tree {
 
     return container;
   };
+
+  export() {
+    return {
+      s: this.searchEngine,
+      v: this.version,
+      bmc: this.bookmarkColumns.map((column) => column.export()),
+    };
+  }
 }
