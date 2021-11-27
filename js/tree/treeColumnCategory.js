@@ -1,5 +1,6 @@
 import Button from "./edit/button.js";
 import TreeItem from "./treeItem.js";
+import Editor from "./edit/editor.js";
 
 // ====================================================== //
 // ================= TreeColumnCategory ================= //
@@ -18,6 +19,7 @@ export default class TreeColumnCategory {
   html(appendPlus) {
     const column = document.createElement("li");
 
+    // appends the plus button if it is the last category of the tree
     if (appendPlus && this.isEditing) {
       column.appendChild(appendPlus);
     }
@@ -32,12 +34,35 @@ export default class TreeColumnCategory {
     });
     column.appendChild(ul);
 
-    //create new add button and append
+    //create new add button and append to end of category
     if (this.isEditing) {
       const addBookmarkButton = new Button("add").html();
       addBookmarkButton.style.paddingLeft = "1.5rem";
       addBookmarkButton.addEventListener("click", () => {
-        console.log("add button clicked");
+        // creates new bookmark element
+        const newBookmark = new TreeItem(
+            { n: "new bookmark", u: "" },
+            this.isEditing
+          ),
+          newBookmarkHtml = newBookmark.html();
+        ul.appendChild(newBookmarkHtml);
+
+        const editor = new Editor(
+          ul,
+          newBookmark,
+          ["cancel", "link"],
+          true,
+          (event) => {
+            if (event.type === "save") {
+              newBookmark.name = event.editResult.text;
+              newBookmark.url = event.editResult.link ?? "#";
+              this.bookmarks.push(newBookmark);
+              ul.appendChild(newBookmark.html());
+            } else if (event.type === "cancel") {
+              console.log("cancel");
+            }
+          }
+        );
       });
       column.appendChild(addBookmarkButton);
     }

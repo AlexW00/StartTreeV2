@@ -28,6 +28,7 @@ export default class TreeColumn {
     const ul = document.createElement("ul");
     this.bookmarkCategories.forEach((bookmarkCategory, index) => {
       let bmc;
+      // check if it's the last bookmark category, if yes, add a button
       if (index != this.bookmarkCategories.length - 1) {
         bmc = bookmarkCategory.html();
       } else {
@@ -37,7 +38,6 @@ export default class TreeColumn {
         addCategoryButton.style.left = "-1rem";
         bmc = bookmarkCategory.html(addCategoryButton);
       }
-
       ul.appendChild(bmc);
     });
 

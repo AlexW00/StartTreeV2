@@ -31,16 +31,61 @@ body {
   z-index: 100;
 }
 
+.editor {
+  height: fit-content;
+  display: flex;
+  align-content: flex-start;
+  flex-direction: column;
+  max-width: 15rem;
+}
+
+.editor .firstRow {
+  display: flex;
+  height: fit-content;
+}
+.editor .firstRow > input {
+  width: 100%;
+}
+
+.editor .secondRow {
+  display: flex;
+  height: fit-content;
+}
+
+.editor .secondRow > input {
+  width: 100%;
+}
+
+.editToolbar {
+  align-items: center;
+  justify-content: center;
+  background: var(--color12);
+  z-index: 100;
+  display: flex;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
 .filling {
   fill: var(--color1);
 }
 
-.editButton {
+.button {
   background: none;
+  padding-right: 00.25rem;
+  padding-left: 00.25rem;
+  /* center it hotizontally*/
 }
 
-.editButton .icon {
+.button .icon {
+  justify-content: center;
   /* TODO: center the icon horizontally and vertically */
+  display: inline;
 }
 
 .container {
@@ -124,7 +169,9 @@ a {
 
 a:hover {
   color: var(--color12);
+  /*
   background: var(--background);
+  */
 }
 
 form h1 {
