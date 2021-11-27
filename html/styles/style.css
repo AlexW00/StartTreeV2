@@ -23,6 +23,18 @@ body {
   background: var(--background);
 }
 
+#modeToggle {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  z-index: 100;
+}
+
+#modeToggle .filling {
+  fill: var(--color1);
+}
+
 .container {
   position: absolute;
   top: 50%;

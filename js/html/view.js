@@ -7,3 +7,6 @@ const treeConfig = parse(urlParams.get("t")) || {};
 
 const t = new Tree(treeConfig);
 document.body.appendChild(t.html());
+
+let modeLink = document.getElementById("modeToggle");
+modeLink.setAttribute("href", modeLink.href + queryString);
