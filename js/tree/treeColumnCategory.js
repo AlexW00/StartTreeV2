@@ -1,6 +1,9 @@
 import Button from "./edit/button.js";
 import TreeItem from "./treeItem.js";
 import Editor from "./edit/editor.js";
+import editorTarget from "./edit/editorTarget.js";
+import EditorOptions from "./edit/editorOptions.js";
+import TreeUpdateEvent from "./edit/treeUpdateEvent.js";
 
 // ====================================================== //
 // ================= TreeColumnCategory ================= //
@@ -22,51 +25,37 @@ export default class TreeColumnCategory {
   // returns a bookmark category with all bookmarks of that category
   html() {
     const column = document.createElement("li");
+    this.root = column;
     column.setAttribute("id", this.id);
     column.classList.add("category");
 
     const h1 = document.createElement("h1");
+    h1.setAttribute("id", this.id + "-header");
     h1.innerHTML = this.name;
     column.appendChild(h1);
 
     h1.addEventListener("click", (event) => {
-      const root = event.target.parentElement.parentElement;
-      console.log(this);
+      const targetParent = event.target.parentElement;
       if (this.isEditing) {
-        const editor = new Editor(
-          root,
-          this,
-          ["cancel", "delete"],
-          {},
-          (event) => {
-            if (event.type === "save") {
-              this.name = event.editResult.text;
+        new Editor(
+          targetParent,
+          new editorTarget(this.name, null, h1.id),
+          new EditorOptions({}),
+          (editorFinishEvent) => {
+            if (editorFinishEvent.type === "save") {
+              this.name = editorFinishEvent.editResult.text;
               h1.innerHTML = this.name;
-              const html = this.html();
-              root.insertBefore(
-                html,
-                root.querySelectorAll(".category")[event.index]
+              targetParent.insertBefore(h1, targetParent.querySelector("ul"));
+              this.onUpdate(
+                new TreeUpdateEvent({ type: "save", updatedObject: this })
               );
-              this.onUpdate({
-                type: "save",
-                bookmarkCategory: this,
-                index: event.index,
-                html: html,
-              });
-            } else if (event.type === "close") {
-              const html = this.html();
-              root.insertBefore(
-                html,
-                root.querySelectorAll(".category")[event.index]
+            } else if (editorFinishEvent.type === "delete") {
+              targetParent.parentElement.removeChild(targetParent);
+              this.onUpdate(
+                new TreeUpdateEvent({ type: "delete", updatedObject: this })
               );
-              this.onUpdate({
-                type: "close",
-                bookmarkCategory: this,
-                index: event.index,
-                html: html,
-              });
-            } else if (event.type === "delete") {
-              this.onUpdate({ type: "delete", bookmarkCategory: this });
+            } else {
+              targetParent.insertBefore(h1, targetParent.querySelector("ul"));
             }
           }
         );
@@ -84,7 +73,7 @@ export default class TreeColumnCategory {
       const addBookmarkButton = new Button("add").html();
       addBookmarkButton.style.paddingLeft = "1.5rem";
       addBookmarkButton.addEventListener("click", () => {
-        // creates new bookmark element
+        // create new empty bookmark element
         const newBookmark = new TreeItem(
             { n: "new bookmark", u: "" },
             this.isEditing,
@@ -93,19 +82,19 @@ export default class TreeColumnCategory {
           newBookmarkHtml = newBookmark.html();
         ul.appendChild(newBookmarkHtml);
 
-        const editor = new Editor(
+        new Editor(
           ul,
-          newBookmark,
-          ["cancel", "link"],
-          { openWithLinkInput: true },
-          (event) => {
-            if (event.type === "save") {
-              newBookmark.name = event.editResult.text;
-              newBookmark.url = event.editResult.link ?? "#";
+          new editorTarget(newBookmark.name, "", newBookmark.id),
+          new EditorOptions({
+            buttons: ["cancel", "link"],
+            openWithLinkInput: true,
+          }),
+          (editorFinishEvent) => {
+            if (editorFinishEvent.type === "save") {
+              newBookmark.name = editorFinishEvent.editResult.text;
+              newBookmark.url = editorFinishEvent.editResult.link ?? "#";
               this.bookmarks.push(newBookmark);
               ul.appendChild(newBookmark.html());
-            } else if (event.type === "cancel") {
-              console.log("cancel");
             }
           }
         );
@@ -116,10 +105,12 @@ export default class TreeColumnCategory {
     return column;
   }
 
-  #onBookmarkUpdate = (event) => {
-    if (event.type === "delete") {
-      this.bookmarks.splice(this.bookmarks.indexOf(event.target), 1);
-      console.log(this.bookmarks);
+  #onBookmarkUpdate = (treeUpdateEvent) => {
+    if (treeUpdateEvent.type === "delete") {
+      this.bookmarks.splice(
+        this.bookmarks.indexOf(treeUpdateEvent.updatedObject),
+        1
+      );
     }
   };
 

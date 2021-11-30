@@ -1,6 +1,9 @@
 import TreeColumnCategory from "./treeColumnCategory.js";
 import Button from "./edit/button.js";
 import Editor from "./edit/editor.js";
+import editorTarget from "./edit/editorTarget.js";
+import EditorOptions from "./edit/editorOptions.js";
+import TreeUpdateEvent from "./edit/treeUpdateEvent.js";
 
 // ====================================================== //
 // ======================= TreeRow ====================== //
@@ -25,6 +28,8 @@ export default class TreeColumn {
   // Returns a
   html() {
     const column = document.createElement("div");
+    this.root = column;
+
     column.classList.add("column");
     column.setAttribute("id", this.id);
 
@@ -34,21 +39,27 @@ export default class TreeColumn {
     const h1 = document.createElement("h1");
     h1.innerHTML = ".";
     h1.setAttribute("id", `${this.id}-h1`);
-    h1.addEventListener("click", (event) => {
-      // holy fuck this is so ugly
-      const root = event.target.parentElement.parentElement.parentElement;
+    h1.addEventListener("click", () => {
       if (this.isEditing) {
-        const editor = new Editor(
+        new Editor(
           tree,
-          { name: ".", id: h1.attributes.id.value },
-          ["cancel", "delete"],
-          { allowTextEdit: false, nodeType: "h1" },
-          (event) => {
-            if (event.type === "delete") {
-              this.onUpdate({ type: "delete", id: this.id });
-              column.parentElement.removeChild(column);
+          new editorTarget(".", null, h1.id),
+          new EditorOptions({
+            allowTextEdit: false,
+            buttons: ["cancel", "delete"],
+            nodeType: "h1",
+          }),
+          (editorFinishEvent) => {
+            if (editorFinishEvent.type === "delete") {
+              this.onUpdate(
+                new TreeUpdateEvent({ type: "delete", updatedObject: this })
+              );
+              this.root.parentElement.removeChild(this.root);
             } else {
-              tree.insertBefore(h1, tree.querySelectorAll("ul")[event.index]);
+              tree.insertBefore(
+                h1,
+                tree.querySelectorAll("ul")[editorFinishEvent.index]
+              );
             }
           }
         );
@@ -61,7 +72,7 @@ export default class TreeColumn {
       ul.appendChild(bookmarkCategory.html());
     });
 
-    ul.lastElementChild.appendChild(this.#addButton(ul));
+    if (this.isEditing) ul.lastElementChild.appendChild(this.#addButton(ul));
 
     tree.appendChild(ul);
 
@@ -85,41 +96,55 @@ export default class TreeColumn {
         newBookmarkCategory.html(addCategoryButton);
       ul.appendChild(newBookmarkCategoryHtml);
 
-      const editor = new Editor(
-        ul,
-        newBookmarkCategory,
-        ["cancel"],
-        {},
-        (event) => {
-          if (event.type === "save") {
-            // append new bookmark category to end of list and push to array
-            newBookmarkCategory.name = event.editResult.text;
-            const newBookmarkCategoryHtml = newBookmarkCategory.html();
-            this.bookmarkCategories.push(newBookmarkCategory);
+      if (this.isEditing) {
+        new Editor(
+          ul,
+          new editorTarget(
+            newBookmarkCategory.name,
+            null,
+            newBookmarkCategory.id
+          ),
+          new EditorOptions({ buttons: ["cancel"] }),
+          (editorFinishEvent) => {
+            if (editorFinishEvent.type === "save") {
+              // append new bookmark category to end of list and push to array
+              newBookmarkCategory.name = editorFinishEvent.editResult.text;
+              const newBookmarkCategoryHtml = newBookmarkCategory.html();
+              this.bookmarkCategories.push(newBookmarkCategory);
 
-            ul.appendChild(newBookmarkCategoryHtml);
-            newBookmarkCategoryHtml.appendChild(addCategoryButton);
-          } else {
-            // re append the button
-            ul.lastElementChild.appendChild(addCategoryButton);
+              ul.appendChild(newBookmarkCategoryHtml);
+              newBookmarkCategoryHtml.appendChild(addCategoryButton);
+            } else {
+              // re append the button
+              ul.lastElementChild.appendChild(addCategoryButton);
+            }
           }
-        }
-      );
+        );
+      }
     });
     return addCategoryButton;
   }
 
-  #onCategoryUpdate = (event) => {
-    if (event.type === "delete") {
-      console.log(this);
-      this.bookmarkCategories.splice(event.index, 1);
-      console.log(this.bookmarkCategories);
-    } else if (event.type === "save" || event.type === "close") {
-      // if it is the last element
-      console.log(event.index);
-      if (event.index === this.bookmarkCategories.length - 1) {
-        // re append the add category button
-        event.html.appendChild(this.#addButton(event.html.parentElement));
+  #onCategoryUpdate = (treeUpdateEvent) => {
+    if (treeUpdateEvent.type === "delete") {
+      // get the index of the category to delete
+      const categoryIndex = this.bookmarkCategories.indexOf(
+        treeUpdateEvent.updatedObject
+      );
+      // remove the category from the array
+      this.bookmarkCategories.splice(categoryIndex, 1);
+
+      // if no category is left, remove this column
+      if (this.bookmarkCategories.length === 0) {
+        this.root.parentElement.removeChild(this.root);
+        this.onUpdate(
+          new TreeUpdateEvent({ type: "delete", updatedObject: this })
+        );
+      }
+      // else if this was the last category in the list, append the add button to the new last category
+      else if (categoryIndex === this.bookmarkCategories.length) {
+        const lastCategory = this.root.querySelector("ul").lastChild;
+        lastCategory.appendChild(this.#addButton(this.root));
       }
     }
   };

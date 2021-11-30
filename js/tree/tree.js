@@ -38,9 +38,10 @@ export default class Tree {
       addColumnButton.addEventListener("click", () => {
         const newBookmarkColumn = new TreeColumn(
           [{ cn: "new category", b: [] }],
-          this.isEditing
+          this.isEditing,
+          this.#onColumnUpdate
         );
-        const newBookmarkColumnHtml = newBookmarkColumn.html(addColumnButton);
+        const newBookmarkColumnHtml = newBookmarkColumn.html();
         row.appendChild(newBookmarkColumnHtml);
         this.bookmarkColumns.push(newBookmarkColumn);
       });
@@ -63,13 +64,10 @@ export default class Tree {
     return container;
   };
 
-  #onColumnUpdate = (event) => {
-    if (event.type === "delete") {
+  #onColumnUpdate = (treeUpdateEvent) => {
+    if (treeUpdateEvent.type === "delete") {
       // remove the column from the tree by its id
-      const column = this.bookmarkColumns.find(
-        (column) => column.id === event.id
-      );
-      const index = this.bookmarkColumns.indexOf(column);
+      const index = this.bookmarkColumns.indexOf(treeUpdateEvent.updatedObject);
       this.bookmarkColumns.splice(index, 1);
     }
   };

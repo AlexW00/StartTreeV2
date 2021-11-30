@@ -1,34 +1,36 @@
 import Button from "./button.js";
+import EditorFinishEvent from "./editorFinishEvent.js";
 import Toolbar from "./toolbar.js";
 export default class Editor {
-  constructor(parentNode, editTarget, buttons, options, cb) {
+  constructor(parentNode, editorTarget, editorOptions, cb) {
     this.cb = cb;
-    this.buttons = buttons;
+    this.buttons = editorOptions.buttons;
     this.parentNode = parentNode;
-    this.editTarget = editTarget;
-    this.text = editTarget.name;
-    this.link = editTarget.url ?? "#";
-    this.linkEditorIsOpen = options.openWithLinkInput ?? false;
-    this.allowTextEdit = options.allowTextEdit ?? true;
-    this.nodeType = options.nodeType ?? "li";
+    this.editorTarget = editorTarget;
+    this.text = editorTarget.name ?? editorTarget.text;
+    this.link = editorTarget.url ?? "#";
+    this.linkEditorIsOpen = editorOptions.openWithLinkInput ?? false;
+    this.allowTextEdit = editorOptions.allowTextEdit ?? true;
+    this.nodeType = editorOptions.nodeType;
 
-    // replace element with editor
+    this.#replaceTargetWithEditor();
+  }
 
-    console.log(parentNode.querySelectorAll("h1"));
-    parentNode.replaceChild(
+  // replace the target element with this editor
+  #replaceTargetWithEditor() {
+    this.parentNode.replaceChild(
       this.html(),
-      parentNode.querySelector("#" + editTarget.id)
+      this.parentNode.querySelector("#" + this.editorTarget.id)
     );
-    // select all elements of parent node
 
-    const children = this.parentNode.querySelectorAll(
-      ".column, .editor, .category, .bookmark"
-    );
+    const children = this.parentNode.children;
     // loop over all
     for (let i = 0; i < children.length; i++) {
-      if (children[i].classList.contains("editor")) this.index = i;
+      if (children[i].classList.contains("editor")) {
+        this.index = i;
+        break;
+      }
     }
-    console.log(this.index);
   }
 
   html() {
@@ -81,35 +83,36 @@ export default class Editor {
 
   save() {
     this.#remove();
-    this.cb({
-      type: "save",
-      editResult: { text: this.text, link: this.link },
-      index: this.index,
-    });
+    this.cb(
+      new EditorFinishEvent(
+        "save",
+        { text: this.text, link: this.link },
+        this.index
+      )
+    );
   }
 
   close() {
     this.#remove();
-    this.cb({
-      type: "close",
-      editResult: { text: this.text, link: this.link, index: this.index },
-      index: this.index,
-    });
+    this.cb(
+      new EditorFinishEvent(
+        "cancel",
+        { text: this.text, link: this.link },
+        this.index
+      )
+    );
   }
 
   delete() {
     this.#remove();
-    this.cb({
-      type: "delete",
-      editResult: { text: this.text, link: this.link, index: this.index },
-      index: this.index,
-    });
+    this.cb(new EditorFinishEvent("delete", null, this.index));
   }
 
   #toggleLinkInput(li) {
     if (this.linkEditorIsOpen) this.#closeLinkInput(li);
     else this.#openLinkInput(li);
   }
+
   #openLinkInput(li) {
     this.linkEditorIsOpen = true;
     const secondRow = document.createElement("div");
