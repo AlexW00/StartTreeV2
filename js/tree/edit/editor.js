@@ -1,23 +1,36 @@
-import Button from "./button.js";
+// ====================================================== //
+// ======================= Editor ======================= //
+// ====================================================== //
+
 import EditorFinishEvent from "./editorFinishEvent.js";
 import Toolbar from "./toolbar.js";
 export default class Editor {
-  constructor(parentNode, editorTarget, editorOptions, cb) {
-    this.cb = cb;
-    this.buttons = editorOptions.buttons;
-    this.parentNode = parentNode;
-    this.editorTarget = editorTarget;
-    this.text = editorTarget.name ?? editorTarget.text;
-    this.link = editorTarget.url ?? "#";
-    this.linkEditorIsOpen = editorOptions.openWithLinkInput ?? false;
-    this.allowTextEdit = editorOptions.allowTextEdit ?? true;
-    this.nodeType = editorOptions.nodeType;
+  static openInstance = null;
 
-    this.#replaceTargetWithEditor();
+  // ~~~~~~~~~ Initialization functions ~~~~~~~~~ //
+
+  constructor(parentNode, editorTarget, editorOptions, cb) {
+    this.cb = cb; // callback function
+    this.buttons = editorOptions.buttons; // ["link", "delete", "cancel"];
+    this.parentNode = parentNode; // the parent node of the edit target
+    this.editorTarget = editorTarget; // the edit target
+    this.text = editorTarget.text; // the text of the edit target
+    this.link = editorTarget.url; // the link of the edit target
+    this.linkEditorIsOpen = editorOptions.openWithLinkInput; // whether or not to open the link input when the editor is opened
+    this.allowTextEdit = editorOptions.allowTextEdit; // whether or not to allow the user to edit the text of the editor
+    this.nodeType = editorOptions.nodeType; // the type of node to append the editor as
+
+    this.#checkIfEditorIsOpen();
+    this.#replaceEditorTarget();
   }
 
-  // replace the target element with this editor
-  #replaceTargetWithEditor() {
+  #checkIfEditorIsOpen() {
+    if (Editor.openInstance != null) Editor.openInstance.close();
+    Editor.openInstance = this;
+  }
+
+  // replaces the target element with this editor
+  #replaceEditorTarget() {
     this.parentNode.replaceChild(
       this.html(),
       this.parentNode.querySelector("#" + this.editorTarget.id)
@@ -33,17 +46,26 @@ export default class Editor {
     }
   }
 
+  // ~~~~~~ Html generating functions ~~~~~~ //
+
+  // returns the html for this editor
   html() {
     const li = document.createElement(this.nodeType);
     li.classList.add("editor");
-
     const firstRow = document.createElement("div");
     firstRow.classList.add("firstRow");
+    firstRow.appendChild(this.#createInputField(li));
+    firstRow.appendChild(this.#createToolbar(li));
+    li.appendChild(firstRow);
+    if (this.linkEditorIsOpen) this.#openLinkInput(li);
+    return li;
+  }
 
+  // creates an input field
+  #createInputField(li) {
     // create input field
-
     const input = document.createElement("input");
-    input.addEventListener("focusout", (event) => {
+    input.addEventListener("focusout", () => {
       console.log(document.activeElement);
       setTimeout(() => {
         if (!li.contains(document.activeElement)) {
@@ -60,11 +82,12 @@ export default class Editor {
       }
     });
     if (!this.allowTextEdit) input.disabled = true;
+    return input;
+  }
 
-    firstRow.appendChild(input);
-
-    // create toolbar
-    const toolBar = new Toolbar(this.buttons, (buttonName) => {
+  // creates the toolbar html
+  #createToolbar(li) {
+    return new Toolbar(this.buttons, (buttonName) => {
       if (buttonName === "cancel") {
         this.close();
       } else if (buttonName === "delete") {
@@ -73,39 +96,6 @@ export default class Editor {
         this.#toggleLinkInput(li);
       }
     }).html();
-    firstRow.appendChild(toolBar);
-
-    li.appendChild(firstRow);
-    if (this.linkEditorIsOpen) this.#openLinkInput(li);
-
-    return li;
-  }
-
-  save() {
-    this.#remove();
-    this.cb(
-      new EditorFinishEvent(
-        "save",
-        { text: this.text, link: this.link },
-        this.index
-      )
-    );
-  }
-
-  close() {
-    this.#remove();
-    this.cb(
-      new EditorFinishEvent(
-        "cancel",
-        { text: this.text, link: this.link },
-        this.index
-      )
-    );
-  }
-
-  delete() {
-    this.#remove();
-    this.cb(new EditorFinishEvent("delete", null, this.index));
   }
 
   #toggleLinkInput(li) {
@@ -143,8 +133,38 @@ export default class Editor {
     li.querySelector(".secondRow").remove();
   }
 
+  // ~~~~~~~ Toolbar event callbacks ~~~~~~ //
+
+  save() {
+    this.#remove();
+    this.cb(
+      new EditorFinishEvent(
+        "save",
+        { text: this.text, link: this.link },
+        this.index
+      )
+    );
+  }
+
+  close() {
+    this.#remove();
+    this.cb(
+      new EditorFinishEvent(
+        "cancel",
+        { text: this.text, link: this.link },
+        this.index
+      )
+    );
+  }
+
+  delete() {
+    this.#remove();
+    this.cb(new EditorFinishEvent("delete", null, this.index));
+  }
+
   #remove() {
     const el = this.parentNode.querySelector(".editor");
     this.parentNode.removeChild(el);
+    Editor.openInstance = null;
   }
 }

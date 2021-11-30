@@ -1,17 +1,21 @@
-import Button from "./button.js";
+// ====================================================== //
+// ======================= Toolbar ====================== //
+// ====================================================== //
 
-// Types of buttons: cancel, delete, link
+import Button from "./button.js";
 export default class Toolbar {
   constructor(buttons, cb) {
-    this.cb = cb;
-    this.buttons = buttons;
+    this.cb = cb; // callback function
+    this.buttons = buttons; // ["link", "delete", "cancel"];
   }
 
+  // ~~~~~~ Html generating function ~~~~~~ //
+
+  // returns the html of the toolbar
   html() {
     const toolBar = document.createElement("div");
     toolBar.classList.add("editToolbar");
 
-    console.log(this.buttons);
     if (this.buttons.includes("link")) {
       const linkButton = new Button("link").html();
       linkButton.addEventListener("click", () => {

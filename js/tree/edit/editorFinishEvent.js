@@ -1,3 +1,7 @@
+// ====================================================== //
+// ================== EditorFinishEvent ================= //
+// ====================================================== //
+
 export default class EditorFinishEvent {
   constructor(type, editResult, index) {
     this.type = type; // either "save", "cancel" or "delete"

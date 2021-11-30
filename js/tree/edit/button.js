@@ -1,5 +1,9 @@
+// ====================================================== //
+// ======================= Button ======================= //
+// ====================================================== //
+
 export default class Button {
-  // types: add, delete, cancel
+  // possible values for type: "save", "cancel", "add" or "delete"
   constructor(type) {
     this.type = type;
     if (type === "add") {
