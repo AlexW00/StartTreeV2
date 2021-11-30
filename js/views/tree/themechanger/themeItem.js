@@ -1,3 +1,7 @@
+// ====================================================== //
+// ====================== ThemeItem ===================== //
+// ====================================================== //
+
 export default class ThemeItem {
   static themeCssLink = document.querySelector(
     "link[href='./styles/colors.css']"
@@ -7,6 +11,7 @@ export default class ThemeItem {
     this.name = themeName;
   }
 
+  // returns a theme item html item
   html() {
     const div = document.createElement("div");
     const input = document.createElement("input");

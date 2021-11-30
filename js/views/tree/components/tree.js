@@ -33,29 +33,20 @@ export default class Tree {
     const row = document.createElement("div");
     row.classList.add("row");
 
-    if (this.isEditing) {
-      const addColumnButton = new Button("add").html();
-      addColumnButton.addEventListener("click", () => {
-        const newBookmarkColumn = new TreeColumn(
-          [{ cn: "new category", b: [] }],
-          this.isEditing,
-          this.#onColumnUpdate
-        );
-        const newBookmarkColumnHtml = newBookmarkColumn.html();
-        row.appendChild(newBookmarkColumnHtml);
-        this.bookmarkColumns.push(newBookmarkColumn);
-      });
-      prompt.appendChild(addColumnButton);
-    }
+    // add the add column button if edit mode is on
+    if (this.isEditing) prompt.appendChild(this.#newAddColumnButton(row));
 
+    // add the bookmark columns
     this.bookmarkColumns.forEach((bookmarkColumn) => {
       row.appendChild(bookmarkColumn.html());
     });
     container.appendChild(row);
 
+    // add the search bar
     const searchBar = new SearchBar(this.searchEngine);
     container.appendChild(searchBar.html());
 
+    // add the theme changer if edit mode is on
     if (this.isEditing) {
       const themeChanger = new ThemeChanger();
       container.appendChild(themeChanger.html());
@@ -64,6 +55,23 @@ export default class Tree {
     return container;
   };
 
+  // creates a new add column button and returns the html element
+  #newAddColumnButton = (row) => {
+    const addColumnButton = new Button("add").html();
+    addColumnButton.addEventListener("click", () => {
+      const newBookmarkColumn = new TreeColumn(
+        [{ cn: "new category", b: [] }],
+        this.isEditing,
+        this.#onColumnUpdate
+      );
+      const newBookmarkColumnHtml = newBookmarkColumn.html();
+      row.appendChild(newBookmarkColumnHtml);
+      this.bookmarkColumns.push(newBookmarkColumn);
+    });
+    return addColumnButton;
+  };
+
+  // callback for when a bookmark column is updated
   #onColumnUpdate = (treeUpdateEvent) => {
     if (treeUpdateEvent.type === "delete") {
       // remove the column from the tree by its id

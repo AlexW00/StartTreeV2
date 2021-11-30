@@ -2,7 +2,7 @@
 // ======================= Toolbar ====================== //
 // ====================================================== //
 
-import Button from "../../other/button.js";
+import Button from "../../../other/button.js";
 export default class Toolbar {
   constructor(buttons, cb) {
     this.cb = cb; // callback function

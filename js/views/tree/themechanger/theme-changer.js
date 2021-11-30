@@ -1,5 +1,8 @@
-import ThemeItem from "./themeItem.js";
+// ====================================================== //
+// ==================== ThemeChanger ==================== //
+// ====================================================== //
 
+import ThemeItem from "./themeItem.js";
 export default class ThemeChanger {
   // all themes, hardcorded currently
   THEMES = [
