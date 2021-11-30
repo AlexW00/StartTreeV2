@@ -2,7 +2,7 @@
 // ======================= Editor ======================= //
 // ====================================================== //
 
-import EditorFinishEvent from "./editorFinishEvent.js";
+import EditorFinishEvent from "./events/editorFinishEvent.js";
 import Toolbar from "./toolbar.js";
 export default class Editor {
   static openInstance = null;

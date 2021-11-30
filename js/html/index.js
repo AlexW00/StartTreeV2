@@ -1,6 +1,6 @@
 import { stringify } from "../helper/jsurl.js";
 
-const exampleData = await fetch("/js/tree/exampleConfig.json").then(
+const exampleData = await fetch("/js/views/tree/exampleConfig.json").then(
   (response) => response.json()
 );
 

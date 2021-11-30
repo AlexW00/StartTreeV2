@@ -1,4 +1,4 @@
-import Tree from "/js/tree/tree.js";
+import Tree from "/js/views/tree/components/tree.js";
 import { parse } from "../helper/jsurl.js";
 
 const queryString = window.location.search;

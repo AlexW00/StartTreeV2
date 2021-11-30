@@ -1,7 +1,7 @@
-import ThemeChanger from "./themechanger/theme-changer.js";
+import ThemeChanger from "../themechanger/theme-changer.js";
 import SearchBar from "./searchBar.js";
 import TreeColumn from "./treeColumn.js";
-import Button from "./edit/button.js";
+import Button from "../../other/button.js";
 
 // ====================================================== //
 // ======================== Tree ======================== //

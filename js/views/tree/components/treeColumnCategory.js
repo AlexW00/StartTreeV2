@@ -1,9 +1,9 @@
-import Button from "./edit/button.js";
+import Button from "../../other/button.js";
 import TreeItem from "./treeItem.js";
-import Editor from "./edit/editor.js";
-import editorTarget from "./edit/editorTarget.js";
-import EditorOptions from "./edit/editorOptions.js";
-import TreeUpdateEvent from "./edit/treeUpdateEvent.js";
+import Editor from "../editor/editor.js";
+import editorTarget from "../editor/helperObjects/editorTarget.js";
+import EditorOptions from "../editor/helperObjects/editorOptions.js";
+import TreeUpdateEvent from "../events/treeUpdateEvent.js";
 
 // ====================================================== //
 // ================= TreeColumnCategory ================= //

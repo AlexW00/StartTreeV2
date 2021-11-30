@@ -1,10 +1,10 @@
 // ====================================================== //
 // ====================== TreeItem ====================== //
 // ====================================================== //
-import Editor from "./edit/editor.js";
-import EditorOptions from "./edit/editorOptions.js";
-import editorTarget from "./edit/editorTarget.js";
-import TreeUpdateEvent from "./edit/treeUpdateEvent.js";
+import Editor from "../editor/editor.js";
+import EditorOptions from "../editor/helperObjects/editorOptions.js";
+import editorTarget from "../editor/helperObjects/editorTarget.js";
+import TreeUpdateEvent from "../events/treeUpdateEvent.js";
 
 export default class TreeItem {
   static count = 0;
