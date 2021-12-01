@@ -2,6 +2,8 @@
 // ====================== TreeItem ====================== //
 // ====================================================== //
 //
+import DragOptions from "../../../helper/dragOptions.js";
+import makeDraggable from "../../../helper/makeDraggable.js";
 import { insertAfter } from "../../../helper/utils.js";
 import Editor from "../editor/components/editor.js";
 import EditorOptions from "../editor/helperObjects/editorOptions.js";
@@ -23,61 +25,48 @@ export default class TreeItem {
   html() {
     // creates a li element with the id of this.id, and the class of "bookmark-category"
     const li = document.createElement("li");
-    li.classList.add("dropzone");
     li.classList.add("bookmark");
 
-    // make the li element draggable
-    li.draggable = true;
-
-    li.addEventListener("dragstart", (event) => {
-      event.dataTransfer.setData("text", JSON.stringify(this.export()));
-      event.currentTarget.classList.add("drag-item");
+    const dragOptionsData = this.export();
+    dragOptionsData.classList = ["bookmark"];
+    console.log(dragOptionsData);
+    const dragOptions = new DragOptions({
+      data: JSON.stringify(dragOptionsData),
+      validDropzones: ["bookmark"],
+      validDragItems: ["bookmark"],
     });
+    makeDraggable(li, dragOptions, (type, event) => {
+      switch (type) {
+        // called when this element is dropped successfully
+        case "dragend": {
+          this.#delete();
+          break;
+        }
+        // called when a draggable is dropped on top of this element
+        case "drop": {
+          const dropzone = event.currentTarget;
+          const dragItemData = JSON.parse(event.dataTransfer.getData("text"));
+          const draggedItem = new TreeItem(
+            { n: dragItemData.n, u: dragItemData.u },
+            dragItemData.isEditing,
+            this.onUpdate
+          );
+          const draggedItemHtml = draggedItem.html();
 
-    li.addEventListener("dragend", (event) => {
-      event.preventDefault();
-      if (event.dataTransfer.dropEffect != "none") {
-        this.#delete();
+          // insert dragged item after it's dropzone
+          insertAfter(draggedItemHtml, dropzone);
+          this.onUpdate(
+            new TreeUpdateEvent({
+              type: "add",
+              updatedObject: this.root,
+              newObject: draggedItem,
+            })
+          );
+          break;
+        }
       }
-      event.currentTarget.classList.remove("drag-item");
     });
-
-    li.addEventListener("dragover", (event) => {
-      event.preventDefault();
-    });
-
-    li.addEventListener("dragenter", (event) => {
-      event.preventDefault();
-      event.currentTarget.classList.add("drag-under-item");
-      return false;
-    });
-    li.addEventListener("dragleave", (event) => {
-      event.preventDefault();
-
-      event.currentTarget.classList.remove("drag-under-item");
-    });
-    li.addEventListener("drop", (event) => {
-      event.preventDefault();
-      const dropzone = event.currentTarget;
-      dropzone.classList.remove("drag-under-item");
-      const data = JSON.parse(event.dataTransfer.getData("text"));
-      const draggedItem = new TreeItem(
-        { n: data.n, u: data.u },
-        data.isEditing,
-        this.onUpdate
-      );
-      const draggedItemHtml = draggedItem.html();
-
-      // insert dragged item after it's dropzone
-      insertAfter(draggedItemHtml, dropzone);
-      this.onUpdate(
-        new TreeUpdateEvent({
-          type: "add",
-          updatedObject: this.root,
-          newObject: draggedItem,
-        })
-      );
-    });
+    // make the li element draggable
 
     this.root = li;
     li.classList.add("bookmark");
