@@ -15,12 +15,30 @@
   --branch: 1px solid var(--color12);
 }
 
+.li :hover {
+  background: var(--color4);
+}
 html {
   font-size: 22px;
 }
 
 body {
   background: var(--background);
+}
+li .drag-over-item {
+  background: var(--color1);
+}
+
+li .drag-under-item {
+  opacity: 0.5;
+}
+
+.drag-item * {
+  background: var(--color1);
+}
+
+.dropzone * {
+  pointer-eventsj: none;
 }
 
 #modeToggle {

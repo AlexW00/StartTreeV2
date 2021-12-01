@@ -23,22 +23,60 @@ export default class TreeItem {
   html() {
     // creates a li element with the id of this.id, and the class of "bookmark-category"
     const li = document.createElement("li");
+    li.classList.add("dropzone");
+    li.classList.add("bookmark");
+
     // make the li element draggable
     li.draggable = true;
 
     li.addEventListener("dragstart", (event) => {
-      event.dataTransfer.setData("text", this.id);
+      event.dataTransfer.setData("text", JSON.stringify(this.export()));
+      event.currentTarget.classList.add("drag-item");
+    });
+
+    li.addEventListener("dragend", (event) => {
+      event.preventDefault();
+      if (event.dataTransfer.dropEffect != "none") {
+        this.#delete();
+      }
+      event.currentTarget.classList.remove("drag-item");
     });
 
     li.addEventListener("dragover", (event) => {
       event.preventDefault();
     });
+
+    li.addEventListener("dragenter", (event) => {
+      event.preventDefault();
+      event.currentTarget.classList.add("drag-under-item");
+      return false;
+    });
+    li.addEventListener("dragleave", (event) => {
+      event.preventDefault();
+
+      event.currentTarget.classList.remove("drag-under-item");
+    });
     li.addEventListener("drop", (event) => {
       event.preventDefault();
-      const data = event.dataTransfer.getData("text");
-      const draggedItem = document.getElementById(data);
-      // insert dragged item before current target
-      insertAfter(draggedItem, event.currentTarget);
+      const dropzone = event.currentTarget;
+      dropzone.classList.remove("drag-under-item");
+      const data = JSON.parse(event.dataTransfer.getData("text"));
+      const draggedItem = new TreeItem(
+        { n: data.n, u: data.u },
+        data.isEditing,
+        this.onUpdate
+      );
+      const draggedItemHtml = draggedItem.html();
+
+      // insert dragged item after it's dropzone
+      insertAfter(draggedItemHtml, dropzone);
+      this.onUpdate(
+        new TreeUpdateEvent({
+          type: "add",
+          updatedObject: this.root,
+          newObject: draggedItem,
+        })
+      );
     });
 
     this.root = li;
@@ -53,16 +91,23 @@ export default class TreeItem {
 
     // adds an onclick event listener to the link element if edit mode is on
     if (this.isEditing) {
-      li.addEventListener("click", (event) => {
+      a.addEventListener("click", (event) => {
+        event.preventDefault();
         this.#onBookmarkClick(event);
       });
     }
     return li;
   }
+  #delete() {
+    this.root.remove();
+    this.onUpdate(
+      new TreeUpdateEvent({ type: "delete", updatedObject: this.root })
+    );
+  }
 
   // creates a new editor and adds it to the DOM
   #onBookmarkClick = (event) => {
-    event.preventDefault();
+    console.log(event.target);
     const parentNode = event.target.parentElement.parentElement;
     new Editor(
       parentNode,

@@ -131,6 +131,12 @@ export default class TreeColumnCategory {
         this.bookmarks.indexOf(treeUpdateEvent.updatedObject),
         1
       );
+    } else if (treeUpdateEvent.type === "add") {
+      // add the bookmark to the array before the updated object
+      const dragTargetIndex = this.bookmarks.indexOf(
+        treeUpdateEvent.updatedObject
+      );
+      this.bookmarks.splice(dragTargetIndex, 0, treeUpdateEvent.newObject);
     }
   };
 
