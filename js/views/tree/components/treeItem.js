@@ -2,6 +2,7 @@
 // ====================== TreeItem ====================== //
 // ====================================================== //
 //
+import { insertAfter } from "../../../helper/utils.js";
 import Editor from "../editor/components/editor.js";
 import EditorOptions from "../editor/helperObjects/editorOptions.js";
 import editorTarget from "../editor/helperObjects/editorTarget.js";
@@ -22,6 +23,24 @@ export default class TreeItem {
   html() {
     // creates a li element with the id of this.id, and the class of "bookmark-category"
     const li = document.createElement("li");
+    // make the li element draggable
+    li.draggable = true;
+
+    li.addEventListener("dragstart", (event) => {
+      event.dataTransfer.setData("text", this.id);
+    });
+
+    li.addEventListener("dragover", (event) => {
+      event.preventDefault();
+    });
+    li.addEventListener("drop", (event) => {
+      event.preventDefault();
+      const data = event.dataTransfer.getData("text");
+      const draggedItem = document.getElementById(data);
+      // insert dragged item before current target
+      insertAfter(draggedItem, event.currentTarget);
+    });
+
     this.root = li;
     li.classList.add("bookmark");
     li.setAttribute("id", this.id);

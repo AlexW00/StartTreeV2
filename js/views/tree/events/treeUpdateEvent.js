@@ -4,7 +4,7 @@
 
 export default class TreeUpdateEvent {
   constructor({ type, updatedObject }) {
-    this.type = type; // "save", "cancel" or "delete"
+    this.type = type; // "save", "cancel", "delete" or "move"
     this.updatedObject = updatedObject; // the updated object
   }
 }
