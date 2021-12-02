@@ -21,6 +21,9 @@ export default (element, dragOptions, callback) => {
     if (event.dataTransfer.dropEffect != "none" && lastDropWasValid) {
       callback("dragend", event);
       event.stopPropagation();
+      nodeStack.forEach((node) => {
+        node.classList.remove("drag-under-item");
+      });
     }
     event.currentTarget.classList.remove("drag-item");
   });
@@ -84,11 +87,12 @@ export default (element, dragOptions, callback) => {
 
     if (_isValidDropzone(nodeStack.at(-1))) {
       nodeStack.at(-1).classList.add("drag-under-item");
-      if (
-        nodeStack.at(-2) &&
-        nodeStack.at(-2).classList.contains("drag-under-item")
-      ) {
-        nodeStack.at(-2).classList.remove("drag-under-item");
+
+      // remove the last dropzone class from all nodestack items
+      for (let i = nodeStack.length - 2; i >= 0; i--) {
+        if (nodeStack[i].classList.contains("drag-under-item")) {
+          nodeStack[i].classList.remove("drag-under-item");
+        }
       }
     }
     console.log(nodeStack);
