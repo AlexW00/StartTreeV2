@@ -51,7 +51,6 @@ export default class SearchBar {
 
     if (this.isEditing) {
       sectionName.addEventListener("click", () => {
-        console.log("clicked");
         new Editor(
           this.root,
           new editorTarget(

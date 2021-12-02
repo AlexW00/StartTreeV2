@@ -66,7 +66,6 @@ export default class Editor {
     // create input field
     const input = document.createElement("input");
     input.addEventListener("focusout", () => {
-      console.log(document.activeElement);
       setTimeout(() => {
         if (!li.contains(document.activeElement)) {
           this.save();
@@ -174,7 +173,7 @@ export default class Editor {
     console.trace();
     const el = this.parentNode.querySelector(".editor");
     if (!el) return;
-    console.log(el);
+
     this.parentNode.removeChild(el);
     Editor.openInstance = null;
   }

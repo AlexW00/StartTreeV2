@@ -166,8 +166,6 @@ export default class TreeColumn {
       }
     }
     if (treeUpdateEvent.type === "add") {
-      console.log("new category added");
-      console.log(treeUpdateEvent.updatedObject);
       // get the index of the category to add
       const categoryIndex = this.bookmarkCategories.indexOf(
         treeUpdateEvent.updatedObject
