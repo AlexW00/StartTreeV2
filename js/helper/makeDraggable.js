@@ -1,16 +1,72 @@
 // keeps track of whether the last draggable element was dropped successfully or not
 let lastDropWasValid = false;
-const nodeStack = [];
+
 export default (element, dragOptions, callback) => {
+  const nodeStack = [];
+  const highlightStack = [];
   element.draggable = true;
   element.classList.add("dropzone");
+
+  const pushHighlight = (element) => {
+    element.classList.add("drag-under-item");
+    const currentHighlight = highlightStack.at(-1);
+    if (currentHighlight) {
+      currentHighlight.classList.remove("drag-under-item");
+    }
+    highlightStack.push(element);
+  };
+
+  const popHighlight = () => {
+    const removedHighlight = highlightStack.pop();
+    if (removedHighlight) removedHighlight.classList.remove("drag-under-item");
+
+    const newHighlight = highlightStack.at(-1);
+    if (newHighlight) newHighlight.classList.add("drag-under-item");
+  };
+
+  const tryPushHighlight = (element) => {
+    if (_isValidDropzone(element)) {
+      pushHighlight(element);
+    }
+  };
+
+  const tryPopHighlight = (element) => {
+    if (highlightStack.at(-1) === element) {
+      popHighlight();
+    }
+  };
+
+  const popNodeStack = () => {
+    const removedNode = nodeStack.pop();
+    tryPopHighlight(removedNode);
+  };
+
+  const pushNodeStack = (element) => {
+    nodeStack.push(element);
+    tryPushHighlight(element);
+  };
+
+  const checkBacktrack = (element) => {
+    for (let i = nodeStack.length - 1; i >= 0; i--) {
+      const topNode = nodeStack.at(-1);
+      if (topNode === element) {
+        return true;
+      } else if (topNode.contains(element)) {
+        pushNodeStack(element);
+        return true;
+      } else {
+        popNodeStack();
+      }
+    }
+    pushNodeStack(element);
+    return false;
+  };
 
   element.addEventListener("dragstart", (event) => {
     event.stopPropagation();
     event.dataTransfer.setData("text", dragOptions.data);
     event.currentTarget.classList.add("drag-item");
     //console.log("dragstart of " + event.currentTarget.classList);
-
     callback("dragstart", event);
   });
 
@@ -34,93 +90,22 @@ export default (element, dragOptions, callback) => {
   });
 
   element.addEventListener("dragenter", (event) => {
-    if (event.currentTarget.classList.contains("drag-item")) {
-      event.stopPropagation();
-      event.preventDefault();
-      console.log("event of current drag item");
-      return;
-    }
-    event.preventDefault();
     event.stopPropagation();
-    console.log("dragenter: ");
-    console.log(element, event.currentTarget, event.target);
-
-    const lastNode = nodeStack.at(-1);
-    if (lastNode === undefined) {
-      //console.log("empty stack");
-      nodeStack.push(event.currentTarget);
-    } else if (
-      lastNode.contains(event.target) &&
-      !event.target.isEqualNode(lastNode)
-    ) {
-      //console.log(event.target + " is contained in " + lastNode);
-      nodeStack.push(event.target);
-    } else if (
-      !lastNode.contains(event.target) &&
-      !event.target.isEqualNode(lastNode)
-    ) {
-      //console.log(event.target + " is not a child of " + lastNode);
-      let didUpdateNodeStack = false;
-      for (let i = nodeStack.length - 1; i >= 0; i--) {
-        //console.log(nodeStack[i]);
-        //console.log(nodeStack[i].contains(event.target));
-        //console.log(event.target);
-
-        if (event.target.isEqualNode(nodeStack[i])) {
-          nodeStack.splice(i + 1, nodeStack.length - i);
-          didUpdateNodeStack = true;
-          break;
-        } else if (nodeStack[i].contains(event.target)) {
-          //console.log("splicing");
-
-          //console.log(nodeStack.splice(i + 1, nodeStack.length - i));
-          //console.log(nodeStack);
-          nodeStack.push(event.target);
-          didUpdateNodeStack = true;
-          break;
-        } else {
-          if (nodeStack[i].classList.contains("drag-under-item")) {
-            nodeStack[i].classList.remove("drag-under-item");
-          }
-        }
-      }
-      //clear the stack
-      if (!didUpdateNodeStack) {
-        nodeStack.splice(0, nodeStack.length);
-        nodeStack.push(event.target);
-      }
-    }
-
-    if (_isValidDropzone(nodeStack.at(-1))) {
-      nodeStack.at(-1).classList.add("drag-under-item");
-
-      // remove the last dropzone class from all nodestack items
-      for (let i = nodeStack.length - 2; i >= 0; i--) {
-        if (nodeStack[i].classList.contains("drag-under-item")) {
-          nodeStack[i].classList.remove("drag-under-item");
-        }
-      }
-    }
+    event.preventDefault();
+    const isNewNode = checkBacktrack(event.target);
+    //console.log("dragenter");
+    //console.log(highlightStack);
     //console.log(nodeStack);
   });
 
   element.addEventListener("dragleave", (event) => {
-    const lastNode = nodeStack.at(-1);
-    //console.log("leave");
-    event.preventDefault();
     event.stopPropagation();
+    event.preventDefault();
+    //console.log("dragleave");
 
-    // if the node that is being left is the parent of the last node in the stack, don't remove it
-    if (!event.target.contains(lastNode)) {
-    } else if (event.target.isEqualNode(lastNode)) {
-      nodeStack.pop();
-      if (lastNode.classList.contains("drag-under-item")) {
-        lastNode.classList.remove("drag-under-item");
-      }
+    if (event.target === nodeStack.at(-1)) {
+      popNodeStack();
     }
-
-    //console.log("nodestack:");
-    //console.log(nodeStack);
   });
 
   // called when ANOTHER element is dropped on this element
@@ -139,14 +124,14 @@ export default (element, dragOptions, callback) => {
   });
 
   const _isValidDropzone = (dropzone) => {
-    console.log(
+    /* console.log(
       "checking dropzone " +
         dropzone.classList +
         " against vaild dropzones " +
         dragOptions.validDropzones
-    );
+    ); */
     const r = _isValid(dropzone, dragOptions.validDropzones);
-    console.log(r);
+    //console.log(r);
     return r;
   };
 

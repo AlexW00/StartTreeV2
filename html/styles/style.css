@@ -26,6 +26,12 @@ html {
   padding: 5px;
   display: block;
 }
+
+.category.dropzone > h1 {
+  margin: 5px;
+  display: block;
+}
+
 .bookmark.dropzone {
   padding: 5px;
   display: block;
@@ -39,12 +45,10 @@ body {
 
 .drag-under-item.bookmark {
   border-bottom: 1px solid red;
-  padding-bottom: 5px;
 }
 
 .drag-under-item.category > h1 {
   border-bottom: 1px solid red;
-  padding-bottom: 5px;
 }
 
 .drag-item * {
