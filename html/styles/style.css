@@ -37,9 +37,14 @@ body {
   background: var(--color1);
 }
 
-.drag-under-item {
-  opacity: 0.5;
-  background: green;
+.drag-under-item.bookmark {
+  border-bottom: 1px solid red;
+  padding-bottom: 5px;
+}
+
+.drag-under-item.category > h1 {
+  border-bottom: 1px solid red;
+  padding-bottom: 5px;
 }
 
 .drag-item * {

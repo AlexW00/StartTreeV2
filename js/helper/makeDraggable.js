@@ -9,7 +9,7 @@ export default (element, dragOptions, callback) => {
     event.stopPropagation();
     event.dataTransfer.setData("text", dragOptions.data);
     event.currentTarget.classList.add("drag-item");
-    console.log("dragstart of " + event.currentTarget.classList);
+    //console.log("dragstart of " + event.currentTarget.classList);
 
     callback("dragstart", event);
   });
@@ -34,39 +34,47 @@ export default (element, dragOptions, callback) => {
   });
 
   element.addEventListener("dragenter", (event) => {
-    console.log("enter");
+    if (event.currentTarget.classList.contains("drag-item")) {
+      event.stopPropagation();
+      event.preventDefault();
+      console.log("event of current drag item");
+      return;
+    }
     event.preventDefault();
+    event.stopPropagation();
+    console.log("dragenter: ");
+    console.log(element, event.currentTarget, event.target);
 
     const lastNode = nodeStack.at(-1);
     if (lastNode === undefined) {
-      console.log("empty stack");
+      //console.log("empty stack");
       nodeStack.push(event.currentTarget);
     } else if (
       lastNode.contains(event.target) &&
       !event.target.isEqualNode(lastNode)
     ) {
-      console.log(event.target + " is contained in " + lastNode);
+      //console.log(event.target + " is contained in " + lastNode);
       nodeStack.push(event.target);
     } else if (
       !lastNode.contains(event.target) &&
       !event.target.isEqualNode(lastNode)
     ) {
-      console.log(event.target + " is not a child of " + lastNode);
+      //console.log(event.target + " is not a child of " + lastNode);
       let didUpdateNodeStack = false;
       for (let i = nodeStack.length - 1; i >= 0; i--) {
-        console.log(nodeStack[i]);
-        console.log(nodeStack[i].contains(event.target));
-        console.log(event.target);
+        //console.log(nodeStack[i]);
+        //console.log(nodeStack[i].contains(event.target));
+        //console.log(event.target);
 
         if (event.target.isEqualNode(nodeStack[i])) {
           nodeStack.splice(i + 1, nodeStack.length - i);
           didUpdateNodeStack = true;
           break;
         } else if (nodeStack[i].contains(event.target)) {
-          console.log("splicing");
+          //console.log("splicing");
 
-          console.log(nodeStack.splice(i + 1, nodeStack.length - i));
-          console.log(nodeStack);
+          //console.log(nodeStack.splice(i + 1, nodeStack.length - i));
+          //console.log(nodeStack);
           nodeStack.push(event.target);
           didUpdateNodeStack = true;
           break;
@@ -81,8 +89,6 @@ export default (element, dragOptions, callback) => {
         nodeStack.splice(0, nodeStack.length);
         nodeStack.push(event.target);
       }
-    } else {
-      console.log("same node");
     }
 
     if (_isValidDropzone(nodeStack.at(-1))) {
@@ -95,12 +101,12 @@ export default (element, dragOptions, callback) => {
         }
       }
     }
-    console.log(nodeStack);
+    //console.log(nodeStack);
   });
 
   element.addEventListener("dragleave", (event) => {
     const lastNode = nodeStack.at(-1);
-    console.log("leave");
+    //console.log("leave");
     event.preventDefault();
     event.stopPropagation();
 
@@ -113,8 +119,8 @@ export default (element, dragOptions, callback) => {
       }
     }
 
-    console.log("nodestack:");
-    console.log(nodeStack);
+    //console.log("nodestack:");
+    //console.log(nodeStack);
   });
 
   // called when ANOTHER element is dropped on this element
@@ -127,7 +133,7 @@ export default (element, dragOptions, callback) => {
       event.stopPropagation();
       const dropzone = event.currentTarget;
       dropzone.classList.remove("drag-under-item");
-      console.log("callback called");
+      //console.log("callback called");
       callback("drop", event);
     }
   });
@@ -139,7 +145,9 @@ export default (element, dragOptions, callback) => {
         " against vaild dropzones " +
         dragOptions.validDropzones
     );
-    return _isValid(dropzone, dragOptions.validDropzones);
+    const r = _isValid(dropzone, dragOptions.validDropzones);
+    console.log(r);
+    return r;
   };
 
   const _isValidDragItem = (dragItem) => {

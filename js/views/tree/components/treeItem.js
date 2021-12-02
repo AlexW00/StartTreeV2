@@ -85,7 +85,7 @@ export default class TreeItem {
     const draggedItemHtml = draggedItem.html();
 
     // insert dragged item after it's dropzone
-    dropzone.parentElement.insertBefore(draggedItemHtml, dropzone);
+    insertAfter(draggedItemHtml, dropzone);
     this.onUpdate(
       new TreeUpdateEvent({
         type: "add",

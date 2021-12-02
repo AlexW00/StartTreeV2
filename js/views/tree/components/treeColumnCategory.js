@@ -113,9 +113,13 @@ export default class TreeColumnCategory {
     );
     const draggedItemHtml = draggedItem.html();
 
-    // append dragged bookmark to the end of the category
-    this.bookmarks.push(draggedItem);
-    this.root.querySelector("ul").appendChild(draggedItemHtml);
+    // prepend this item to the list
+    const categoryList = this.root.querySelector("ul");
+    this.bookmarks.unshift(draggedItem);
+    categoryList.insertBefore(
+      draggedItemHtml,
+      categoryList.querySelector(".bookmark")
+    );
   }
 
   // TODO: create extra class for this??
@@ -209,7 +213,7 @@ export default class TreeColumnCategory {
       const dragTargetIndex = this.bookmarks.indexOf(
         treeUpdateEvent.updatedObject
       );
-      this.bookmarks.splice(dragTargetIndex, 0, treeUpdateEvent.newObject);
+      this.bookmarks.splice(dragTargetIndex + 1, 0, treeUpdateEvent.newObject);
     }
   };
 
