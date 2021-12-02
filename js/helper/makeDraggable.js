@@ -1,9 +1,8 @@
 // keeps track of whether the last draggable element was dropped successfully or not
 let lastDropWasValid = false;
-
+const nodeStack = [];
+const highlightStack = [];
 export default (element, dragOptions, callback) => {
-  const nodeStack = [];
-  const highlightStack = [];
   element.draggable = true;
   element.classList.add("dropzone");
 
