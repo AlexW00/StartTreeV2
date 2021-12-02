@@ -4,6 +4,9 @@ import Editor from "../editor/components/editor.js";
 import editorTarget from "../editor/helperObjects/editorTarget.js";
 import EditorOptions from "../editor/helperObjects/editorOptions.js";
 import TreeUpdateEvent from "../events/treeUpdateEvent.js";
+import DragOptions from "../../../helper/dragOptions.js";
+import makeDraggable from "../../../helper/makeDraggable.js";
+import { insertAfter } from "../../../helper/utils.js";
 
 // ====================================================== //
 // ================= TreeColumnCategory ================= //
@@ -39,10 +42,80 @@ export default class TreeColumnCategory {
     });
     column.appendChild(ul);
 
-    //create new add button and append to end of category, if edit mode is on
-    if (this.isEditing) column.appendChild(this.#newAddCategoryButton(ul));
+    //create new add button and append to end of category and makes root node draggable, if edit mode is on
+    if (this.isEditing) {
+      column.appendChild(this.#newAddCategoryButton(ul));
+      this.#makeDraggable();
+    }
 
     return column;
+  }
+
+  #makeDraggable = () => {
+    const dragOptionsData = this.export();
+    dragOptionsData.classList = ["category"];
+    const dragOptions = new DragOptions({
+      data: JSON.stringify(dragOptionsData),
+      validDropzones: ["category"],
+      validDragItems: ["category", "bookmark"],
+    });
+    makeDraggable(this.root, dragOptions, (type, event) => {
+      if (type === "drop") {
+        this.#onDrop(event);
+      } else if (type === "dragend") {
+        this.#onDragEnd(event);
+      }
+    });
+  };
+
+  #onDragEnd = (event) => {
+    this.#delete();
+  };
+
+  #delete() {
+    this.root.remove();
+    this.onUpdate(new TreeUpdateEvent({ type: "delete", updatedObject: this }));
+  }
+
+  #onDrop = (event) => {
+    const dropzone = event.currentTarget;
+    const dragItemData = JSON.parse(event.dataTransfer.getData("text"));
+
+    const dragItemClass = dragItemData.classList[0];
+    console.log("dropped a " + dragItemClass);
+
+    if (dragItemClass === "bookmark") this.#onDropBookmark(dragItemData);
+    else if (dragItemClass === "category") this.#onDropCategory(dragItemData);
+  };
+
+  #onDropCategory(dragItemData) {
+    const draggedItem = new TreeColumnCategory(
+      { cn: dragItemData.cn, b: dragItemData.b },
+      this.isEditing,
+      this.onUpdate
+    );
+    const draggedItemHtml = draggedItem.html();
+    this.root.parentElement.insertBefore(draggedItemHtml, this.root);
+    this.onUpdate(
+      new TreeUpdateEvent({
+        type: "add",
+        updatedObject: this.root,
+        newObject: draggedItemHtml,
+      })
+    );
+  }
+
+  #onDropBookmark(dragItemData) {
+    const draggedItem = new TreeItem(
+      { n: dragItemData.n, u: dragItemData.u },
+      this.isEditing,
+      this.#onBookmarkUpdate
+    );
+    const draggedItemHtml = draggedItem.html();
+
+    // append dragged bookmark to the end of the category
+    this.bookmarks.push(draggedItem);
+    this.root.querySelector("ul").appendChild(draggedItemHtml);
   }
 
   // TODO: create extra class for this??

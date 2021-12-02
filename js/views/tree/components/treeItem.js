@@ -26,51 +26,8 @@ export default class TreeItem {
     // creates a li element with the id of this.id, and the class of "bookmark-category"
     const li = document.createElement("li");
     li.classList.add("bookmark");
-
-    const dragOptionsData = this.export();
-    dragOptionsData.classList = ["bookmark"];
-    console.log(dragOptionsData);
-    const dragOptions = new DragOptions({
-      data: JSON.stringify(dragOptionsData),
-      validDropzones: ["bookmark"],
-      validDragItems: ["bookmark"],
-    });
-    makeDraggable(li, dragOptions, (type, event) => {
-      switch (type) {
-        // called when this element is dropped successfully
-        case "dragend": {
-          this.#delete();
-          break;
-        }
-        // called when a draggable is dropped on top of this element
-        case "drop": {
-          const dropzone = event.currentTarget;
-          const dragItemData = JSON.parse(event.dataTransfer.getData("text"));
-          const draggedItem = new TreeItem(
-            { n: dragItemData.n, u: dragItemData.u },
-            dragItemData.isEditing,
-            this.onUpdate
-          );
-          const draggedItemHtml = draggedItem.html();
-
-          // insert dragged item after it's dropzone
-          insertAfter(draggedItemHtml, dropzone);
-          this.onUpdate(
-            new TreeUpdateEvent({
-              type: "add",
-              updatedObject: this.root,
-              newObject: draggedItem,
-            })
-          );
-          break;
-        }
-      }
-    });
-    // make the li element draggable
-
-    this.root = li;
-    li.classList.add("bookmark");
     li.setAttribute("id", this.id);
+    this.root = li;
 
     // creates a link element with the href of this.url, and the text of this.name
     const a = document.createElement("a");
@@ -78,20 +35,69 @@ export default class TreeItem {
     a.textContent = this.name;
     li.appendChild(a);
 
-    // adds an onclick event listener to the link element if edit mode is on
+    // adds an onclick event listener to the link element and makes root draggable if edit mode is on
     if (this.isEditing) {
       a.addEventListener("click", (event) => {
         event.preventDefault();
         this.#onBookmarkClick(event);
       });
+      this.#makeDraggable();
     }
     return li;
   }
+
+  #makeDraggable = () => {
+    const dragOptionsData = this.export();
+    dragOptionsData.classList = ["bookmark"];
+    const dragOptions = new DragOptions({
+      data: JSON.stringify(dragOptionsData),
+      validDropzones: ["bookmark", "category"],
+      validDragItems: ["bookmark"],
+    });
+
+    makeDraggable(this.root, dragOptions, (type, event) => {
+      switch (type) {
+        // called when this element is dropped successfully
+        case "dragend": {
+          this.#delete();
+          break;
+        }
+        // called when a valid draggable is dropped on top of this element
+        case "drop": {
+          this.#onDrop(event);
+          break;
+        }
+      }
+    });
+  };
+
+  // valid element is dropped on this element
+  #onDrop(event) {
+    console.log("onDrop");
+    const dropzone = event.currentTarget;
+    console.log(dropzone);
+    const dragItemData = JSON.parse(event.dataTransfer.getData("text"));
+    const draggedItem = new TreeItem(
+      { n: dragItemData.n, u: dragItemData.u },
+      this.isEditing,
+      this.onUpdate
+    );
+    const draggedItemHtml = draggedItem.html();
+
+    // insert dragged item after it's dropzone
+    dropzone.parentElement.insertBefore(draggedItemHtml, dropzone);
+    this.onUpdate(
+      new TreeUpdateEvent({
+        type: "add",
+        updatedObject: this.root,
+        newObject: draggedItem,
+      })
+    );
+  }
+
   #delete() {
     this.root.remove();
-    this.onUpdate(
-      new TreeUpdateEvent({ type: "delete", updatedObject: this.root })
-    );
+    this.onUpdate(new TreeUpdateEvent({ type: "delete", updatedObject: this }));
   }
 
   // creates a new editor and adds it to the DOM

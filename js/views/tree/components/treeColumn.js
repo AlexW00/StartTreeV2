@@ -165,6 +165,18 @@ export default class TreeColumn {
         lastCategory.appendChild(this.#newAddCategoryButton(this.root));
       }
     }
+    if (treeUpdateEvent.type === "add") {
+      // get the index of the category to add
+      const categoryIndex = this.bookmarkCategories.indexOf(
+        treeUpdateEvent.updatedObject
+      );
+      // add the category to the array
+      this.bookmarkCategories.splice(
+        categoryIndex,
+        0,
+        treeUpdateEvent.updatedObject
+      );
+    }
   };
 
   export() {

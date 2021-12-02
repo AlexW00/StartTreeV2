@@ -22,15 +22,24 @@ html {
   font-size: 22px;
 }
 
+.category.dropzone {
+  padding: 5px;
+  display: block;
+}
+.bookmark.dropzone {
+  padding: 5px;
+  display: block;
+}
 body {
   background: var(--background);
 }
-li .drag-over-item {
+.drag-over-item {
   background: var(--color1);
 }
 
-li .drag-under-item {
+.drag-under-item {
   opacity: 0.5;
+  background: green;
 }
 
 .drag-item * {
@@ -38,7 +47,6 @@ li .drag-under-item {
 }
 
 .dropzone * {
-  pointer-eventsj: none;
 }
 
 #modeToggle {
