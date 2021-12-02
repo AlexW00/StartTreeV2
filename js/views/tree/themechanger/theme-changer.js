@@ -25,7 +25,7 @@ export default class ThemeChanger {
     "water-fire",
   ];
 
-  themeCssLink = document.querySelector("link[href='./styles/colors.css']");
+  themeCssLink = document.querySelector("link[href='/styles/colors.css']");
 
   constructor(config) {
     this.themeNr = config.nr ?? 0;
@@ -34,7 +34,7 @@ export default class ThemeChanger {
   }
 
   changeTheme(nameTheme) {
-    this.themeCssLink.href = `./themes/${nameTheme}.css`;
+    this.themeCssLink.href = `/themes/${nameTheme}.css`;
   }
 
   html() {
