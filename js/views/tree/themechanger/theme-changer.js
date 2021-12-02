@@ -28,7 +28,6 @@ export default class ThemeChanger {
   themeCssLink = document.querySelector("link[href='./styles/colors.css']");
 
   constructor(config) {
-    console.log(config);
     this.themeNr = config.nr ?? 0;
     this.addListener();
     this.changeTheme(this.THEMES[this.themeNr]);

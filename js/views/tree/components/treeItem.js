@@ -73,9 +73,8 @@ export default class TreeItem {
 
   // valid element is dropped on this element
   #onDrop(event) {
-    console.log("onDrop");
     const dropzone = event.currentTarget;
-    console.log(dropzone);
+
     const dragItemData = JSON.parse(event.dataTransfer.getData("text"));
     const draggedItem = new TreeItem(
       { n: dragItemData.n, u: dragItemData.u },
@@ -102,7 +101,6 @@ export default class TreeItem {
 
   // creates a new editor and adds it to the DOM
   #onBookmarkClick = (event) => {
-    console.log(event.target);
     const parentNode = event.target.parentElement.parentElement;
     new Editor(
       parentNode,

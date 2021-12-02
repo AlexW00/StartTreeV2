@@ -1,59 +1,65 @@
 {
-  "s": 1,
+  "s": {
+    "n": "ddg",
+    "u": "https://duckduckgo.com/?q="
+  },
+  "t": {
+    "nr": 2
+  },
   "v": "0.0",
   "bmc": [
     [
       {
-        "cn": "column in row 1 n",
+        "cn": "Welcome...",
         "b": [
           {
             "n": "bm1",
-            "u": "http://www.google.com"
+            "u": ""
           },
           {
             "n": "bm2",
-            "u": "http://www.google.com"
+            "u": ""
           }
         ]
       },
       {
-        "cn": "column in row 1 n",
+        "cn": "This is the...",
         "b": [
           {
-            "n": "bm3",
-            "u": "http://www.google.com"
+            "n": "bm5",
+            "u": ""
           },
           {
-            "n": "bm4",
-            "u": "http://www.google.com"
+            "n": "bm6",
+            "u": ""
           }
         ]
       }
     ],
     [
       {
-        "cn": "column in row 2 n",
+        "cn": "...to StartTreeV2!",
         "b": [
           {
-            "n": "bm1",
-            "u": "http://www.google.com"
+            "n": "bm3",
+            "u": ""
           },
           {
-            "n": "bm2",
-            "u": "http://www.google.com"
+            "n": "bm4",
+            "u": ""
           }
         ]
       },
       {
-        "cn": "column in row 2 n",
+        "cn": "...start config.",
         "b": [
           {
-            "n": "bm3",
-            "u": "http://www.google.com"
+            "n": "bm7",
+            "u": ""
           },
           {
-            "n": "bm4",
-            "u": "http://www.google.com"
+            "n": "bm8",
+            "u": ""
           }
         ]
       }

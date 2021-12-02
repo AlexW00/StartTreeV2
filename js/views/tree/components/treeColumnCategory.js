@@ -82,7 +82,6 @@ export default class TreeColumnCategory {
     const dragItemData = JSON.parse(event.dataTransfer.getData("text"));
 
     const dragItemClass = dragItemData.classList[0];
-    console.log("dropped a " + dragItemClass);
 
     if (dragItemClass === "bookmark") this.#onDropBookmark(dragItemData);
     else if (dragItemClass === "category") this.#onDropCategory(dragItemData);
