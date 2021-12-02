@@ -14,4 +14,4 @@ a.innerText = "Open tree";
 button.appendChild(a);
 document.body.appendChild(button); */
 
-location.href = `/html/v.html?t=${jsonStringified}`;
+location.href = `./html/v.html?t=${jsonStringified}`;
