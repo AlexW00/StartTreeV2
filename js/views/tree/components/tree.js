@@ -15,12 +15,18 @@ export default class Tree {
     this.searchEngine = config.s;
     this.version = config.v || "0.0";
     this.isEditing = isEditing;
+    this.searchBar = new SearchBar(config.s, this.isEditing);
+    this.themeChanger = new ThemeChanger(config.t);
   }
 
   // returns a div of class "container", containing the entire bookmark tree
   html = () => {
     const container = document.createElement("div");
     container.classList.add("container");
+
+    if (this.isEditing) {
+      container.appendChild(this.themeChanger.html());
+    }
     const prompt = document.createElement("div");
     prompt.classList.add("prompt");
     prompt.innerHTML = "~ ";
@@ -42,15 +48,9 @@ export default class Tree {
     });
     container.appendChild(row);
 
-    // add the search bar
-    const searchBar = new SearchBar(this.searchEngine);
-    container.appendChild(searchBar.html());
+    container.appendChild(this.searchBar.html());
 
     // add the theme changer if edit mode is on
-    if (this.isEditing) {
-      const themeChanger = new ThemeChanger();
-      container.appendChild(themeChanger.html());
-    }
 
     return container;
   };
@@ -82,9 +82,10 @@ export default class Tree {
 
   export() {
     return {
-      s: this.searchEngine,
+      s: this.searchBar.export(),
       v: this.version,
       bmc: this.bookmarkColumns.map((column) => column.export()),
+      t: this.themeChanger.export(),
     };
   }
 }

@@ -22,20 +22,6 @@ html {
   font-size: 22px;
 }
 
-.category.dropzone {
-  padding: 5px;
-  display: block;
-}
-
-.category.dropzone > h1 {
-  margin: 5px;
-  display: block;
-}
-
-.bookmark.dropzone {
-  padding: 5px;
-  display: block;
-}
 body {
   background: var(--background);
 }
@@ -59,7 +45,7 @@ body {
 }
 
 #modeToggle {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   padding: 10px;
@@ -74,6 +60,47 @@ body {
   max-width: 15rem;
 }
 
+*[data-tooltip] {
+  position: absolute;
+}
+
+*[data-tooltip]::after {
+  content: attr(data-tooltip);
+
+  position: absolute;
+  top: 2rem;
+  width: 4rem;
+
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transition: opacity 0.15s ease-in-out;
+  -moz-transition: opacity 0.15s ease-in-out;
+  -ms-transition: opacity 0.15s ease-in-out;
+  -o-transition: opacity 0.15s ease-in-out;
+  transition: opacity 0.15s ease-in-out;
+
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  background: var(--background);
+  color: var(--color6);
+  font-family: var(--font);
+  padding: 0.5rem;
+  border: 1px solid var(--color12);
+  box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.4);
+}
+
+*[data-tooltip]#modeToggle::after {
+  right: 2.2rem;
+}
+
+*[data-tooltip]#exportButton::after {
+  left: 2.2rem;
+}
+
+*[data-tooltip]:hover::after {
+  opacity: 1;
+}
 .editor .firstRow {
   display: flex;
   height: fit-content;
@@ -167,6 +194,10 @@ ul {
 
 li {
   position: relative;
+}
+
+.category {
+  min-width: 11rem;
 }
 
 li::before,

@@ -73,12 +73,17 @@ export default class Editor {
         }
       });
     });
+    input.addEventListener("focus", () => {
+      input.setAttribute("draggable", "false");
+      input.parentNode.setAttribute("draggable", "false");
+      input.parentNode.parentNode.setAttribute("draggable", "false");
+    });
     input.type = "text";
     input.value = this.text;
     input.addEventListener("keydown", (e) => {
       this.text = input.value;
-      if (e.keyCode === 13) {
-        this.save();
+      if (e.keyCode === 13 && input === document.activeElement) {
+        this.save(li.parentNode);
       }
     });
     if (!this.allowTextEdit) input.disabled = true;
@@ -120,8 +125,9 @@ export default class Editor {
     input.value = this.link;
     input.addEventListener("keydown", (e) => {
       this.link = input.value;
-      if (e.keyCode === 13) {
-        this.save();
+      if (e.keyCode === 13 && input === document.activeElement) {
+        e.preventDefault();
+        this.save(li.parentNode);
       }
     });
     secondRow.appendChild(input);
@@ -136,6 +142,7 @@ export default class Editor {
   // ~~~~~~~ Toolbar event callbacks ~~~~~~ //
 
   save() {
+    if (this.isClosed) return;
     this.#remove();
     this.cb(
       new EditorFinishEvent(
@@ -163,7 +170,11 @@ export default class Editor {
   }
 
   #remove() {
+    this.isClosed = true;
+    console.trace();
     const el = this.parentNode.querySelector(".editor");
+    if (!el) return;
+    console.log(el);
     this.parentNode.removeChild(el);
     Editor.openInstance = null;
   }

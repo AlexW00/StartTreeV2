@@ -31,6 +31,20 @@ export default class Button {
       </svg>
 
       `;
+    } else if (type === "export") {
+      this.svg = `
+      <svg width="36" class="icon" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g id="check_circle_outline_24px">
+         <path class="filling" id="icon/action/check_circle_outline_24px" fill-rule="evenodd" clip-rule="evenodd" d="M18 3C9.72 3 3 9.72 3 18C3 26.28 9.72 33 18 33C26.28 33 33 26.28 33 18C33 9.72 26.28 3 18 3ZM18 30C11.385 30 6 24.615 6 18C6 11.385 11.385 6 18 6C24.615 6 30 11.385 30 18C30 24.615 24.615 30 18 30ZM15 21.255L24.885 11.37L27 13.5L15 25.5L9 19.5L11.115 17.385L15 21.255Z"/>
+        </g>
+      </svg>
+      `;
+    } else if (type === "cancelExport") {
+      this.svg = `
+      <svg width="30"class="icon" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" class="filling" clip-rule="evenodd" d="M15 0C6.705 0 0 6.705 0 15C0 23.295 6.705 30 15 30C23.295 30 30 23.295 30 15C30 6.705 23.295 0 15 0ZM15 27C8.385 27 3 21.615 3 15C3 8.385 8.385 3 15 3C21.615 3 27 8.385 27 15C27 21.615 21.615 27 15 27ZM15 12.885L20.385 7.5L22.5 9.615L17.115 15L22.5 20.385L20.385 22.5L15 17.115L9.615 22.5L7.5 20.385L12.885 15L7.5 9.615L9.615 7.5L15 12.885Z" />
+      </svg>
+  `;
     } else throw new Error("AddButton type must be add, delete, or cancel");
   }
 

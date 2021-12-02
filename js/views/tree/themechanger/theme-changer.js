@@ -27,8 +27,11 @@ export default class ThemeChanger {
 
   themeCssLink = document.querySelector("link[href='./styles/colors.css']");
 
-  constructor() {
+  constructor(config) {
+    console.log(config);
+    this.themeNr = config.nr ?? 0;
     this.addListener();
+    this.changeTheme(this.THEMES[this.themeNr]);
   }
 
   changeTheme(nameTheme) {
@@ -69,8 +72,16 @@ export default class ThemeChanger {
   addListener = () => {
     document.addEventListener("click", (e) => {
       if (e.target.name === "theme-radio") {
+        // print index of clicked element
+        this.themeNr = this.THEMES.indexOf(e.target.id);
         this.changeTheme(e.target.id);
       }
     });
+  };
+
+  export = () => {
+    return {
+      nr: this.themeNr,
+    };
   };
 }

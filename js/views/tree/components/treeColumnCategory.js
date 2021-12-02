@@ -95,12 +95,12 @@ export default class TreeColumnCategory {
       this.onUpdate
     );
     const draggedItemHtml = draggedItem.html();
-    this.root.parentElement.insertBefore(draggedItemHtml, this.root);
+    this.root.parentNode.insertBefore(draggedItemHtml, this.root);
     this.onUpdate(
       new TreeUpdateEvent({
         type: "add",
-        updatedObject: this.root,
-        newObject: draggedItemHtml,
+        updatedObject: this,
+        newObject: draggedItem,
       })
     );
   }
