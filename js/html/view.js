@@ -5,7 +5,6 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const treeConfig = parse(urlParams.get("t")) || {};
 
-console.log(treeConfig);
 const t = new Tree(treeConfig, false);
 document.body.appendChild(t.html());
 

@@ -170,7 +170,6 @@ export default class Editor {
 
   #remove() {
     this.isClosed = true;
-    console.trace();
     const el = this.parentNode.querySelector(".editor");
     if (!el) return;
 
