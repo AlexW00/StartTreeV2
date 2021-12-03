@@ -31,7 +31,7 @@ export default class TreeItem {
 
     // creates a link element with the href of this.url, and the text of this.name
     const a = document.createElement("a");
-    a.href = "//" + this.url;
+    a.href = this.#generateLinkText(this.url);
     a.textContent = this.name;
     li.appendChild(a);
 
@@ -44,6 +44,13 @@ export default class TreeItem {
       this.#makeDraggable();
     }
     return li;
+  }
+
+  #generateLinkText(url) {
+    // if the url has a protocol, return the url, else append a protocol
+    if (url.includes("//")) {
+      return url;
+    } else return "//" + url;
   }
 
   #makeDraggable = () => {
