@@ -31,7 +31,7 @@ export default class TreeItem {
 
     // creates a link element with the href of this.url, and the text of this.name
     const a = document.createElement("a");
-    a.href = this.url;
+    a.href = "//" + this.url;
     a.textContent = this.name;
     li.appendChild(a);
 
