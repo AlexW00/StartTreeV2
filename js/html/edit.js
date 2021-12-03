@@ -15,7 +15,7 @@ const cancelButtonRoot = document.createElement("div");
 cancelButtonRoot.setAttribute("id", "modeToggle");
 cancelButtonRoot.setAttribute(
   "data-tooltip",
-  "Discard changes all and go back"
+  "Discard all changes and go back"
 );
 const cancelButton = new Button("cancelExport").html();
 cancelButtonRoot.appendChild(cancelButton);
