@@ -34,7 +34,7 @@ export default class ThemeChanger {
   }
 
   changeTheme(nameTheme) {
-    this.themeCssLink.href = `/themes/${nameTheme}.css`;
+    this.themeCssLink.href = `./themes/${nameTheme}.css`;
   }
 
   html() {
