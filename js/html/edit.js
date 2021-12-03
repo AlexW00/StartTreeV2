@@ -1,4 +1,4 @@
-import Tree from "/js/views/tree/components/tree.js";
+import Tree from "../views/tree/components/tree.js";
 import { parse, stringify } from "../helper/jsurl.js";
 import Button from "../views/other/button.js";
 
