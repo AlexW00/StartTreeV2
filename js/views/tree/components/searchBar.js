@@ -42,13 +42,16 @@ export default class SearchBar {
   sectionNameHtml() {
     const sectionName = document.createElement("div");
     sectionName.setAttribute("id", "searchBarText");
-    sectionName.innerHTML = "~";
-
+    const textContent = document.createElement("div");
+    textContent.classList.add("text-content");
+    textContent.style.display = "inline";
+    textContent.innerHTML = "~";
     const symSpan = document.createElement("span");
     symSpan.innerHTML = " γ ";
-    sectionName.appendChild(symSpan);
-    sectionName.innerHTML += `${this.searchEngineNameShort}`;
+    textContent.appendChild(symSpan);
+    textContent.innerHTML += `${this.searchEngineNameShort}`;
 
+    sectionName.appendChild(textContent);
     return sectionName;
   }
 

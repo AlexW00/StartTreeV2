@@ -92,7 +92,7 @@ export default class Editor {
 
   // creates the toolbar html
   #createToolbar(li) {
-    return new Toolbar(this.buttons, (buttonName) => {
+    this.toolbar = new Toolbar(this.buttons, (buttonName) => {
       if (buttonName === "cancel") {
         this.close();
       } else if (buttonName === "delete") {
@@ -100,18 +100,25 @@ export default class Editor {
       } else if (buttonName === "link") {
         this.#toggleLinkInput(li);
       }
-    }).html();
+    });
+    return this.toolbar.html();
   }
 
   #toggleLinkInput(li) {
-    if (this.linkEditorIsOpen) this.#closeLinkInput(li);
-    else this.#openLinkInput(li);
+    if (this.linkEditorIsOpen) {
+      this.#closeLinkInput(li);
+      this.toolbar.linkButton.classList.remove("active");
+    } else {
+      this.#openLinkInput(li);
+      this.toolbar.linkButton.classList.add("active");
+    }
   }
 
   #openLinkInput(li) {
     this.linkEditorIsOpen = true;
     const secondRow = document.createElement("div");
     secondRow.classList.add("secondRow");
+    this.toolbar.linkButton.classList.add("active");
 
     const input = document.createElement("input");
     input.addEventListener("focusout", (event) => {

@@ -71,6 +71,7 @@ export default class EditTreeColumn extends TreeColumn {
   // creates a new add button for a category
   #newAddCategoryButton() {
     const addCategoryButton = new Button("add").html();
+    addCategoryButton.classList.add("add-category-button");
     addCategoryButton.style.position = "absolute";
     addCategoryButton.style.top = "1.5rem";
     addCategoryButton.style.left = "-1rem";

@@ -41,14 +41,6 @@ export default class ThemeChanger {
     const root = document.createElement("div");
     root.classList.add("prompt");
 
-    const sectionName = document.createElement("div");
-    sectionName.innerHTML = "~";
-    const themeSpan = document.createElement("span");
-    themeSpan.innerHTML = " Ξ ";
-    sectionName.appendChild(themeSpan);
-    sectionName.innerHTML += "theme";
-    root.appendChild(sectionName);
-
     const themeChangerContainer = document.createElement("div");
     themeChangerContainer.classList.add("theme-changer-container");
     const h1 = document.createElement("h1");

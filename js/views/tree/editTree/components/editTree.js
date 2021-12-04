@@ -31,6 +31,7 @@ export default class EditTree extends Tree {
 
   renderHtml() {
     this.root = super.renderHtml();
+    this.root.append(this.themeChanger.html());
     this.titlePrompt.appendChild(this.#addColumnButtonHtml());
     return this.root;
   }

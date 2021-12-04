@@ -4,36 +4,46 @@
 
 export default class Button {
   // possible values for type: "save", "cancel", "add" or "delete"
-  constructor(type) {
+  constructor(type, width, height) {
     this.type = type;
     if (type === "add") {
       this.svg = `
-      <svg width="20" class="icon, ${type}" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="${width ?? 18}" class="icon, ${type}" height="${
+        height ?? 18
+      }" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path class="filling" fill-rule="evenodd" clip-rule="evenodd" d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM9 5V9H5V11H9V15H11V11H15V9H11V5H9ZM2 10C2 14.41 5.59 18 10 18C14.41 18 18 14.41 18 10C18 5.59 14.41 2 10 2C5.59 2 2 5.59 2 10Z" />
       </svg>
       `;
     } else if (type === "delete") {
       this.svg = `
-        <svg width="24" class="icon, ${type}" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="${width ?? 24}" class="icon, ${type}" height="${
+        height ?? 24
+      }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path class="filling" fill-rule="evenodd" clip-rule="evenodd" d="M14.5 3L15.5 4H19V6H5V4H8.5L9.5 3H14.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z"/>
         </svg>
       `;
     } else if (type === "cancel") {
       this.svg = `
-        <svg width="24" class="icon, ${type}" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="${width ?? 24}" class="icon, ${type}" height="${
+        height ?? 24
+      }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path class="filling" fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.364 0 0 5.364 0 12C0 18.636 5.364 24 12 24C18.636 24 24 18.636 24 12C24 5.364 18.636 0 12 0ZM12 21.6C6.708 21.6 2.4 17.292 2.4 12C2.4 6.70799 6.708 2.39999 12 2.39999C17.292 2.39999 21.6 6.70799 21.6 12C21.6 17.292 17.292 21.6 12 21.6ZM12 10.308L16.308 6L18 7.692L13.692 12L18 16.308L16.308 18L12 13.692L7.692 18L6 16.308L10.308 12L6 7.692L7.692 6L12 10.308Z" fill="#2F4B34"/>
         </svg> 
         `;
     } else if (type === "link") {
       this.svg = `
-      <svg width="20" class="icon, ${type}" height="10" viewBox="0 0 20 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="${width ?? 24}" class="icon, ${type}" height="${
+        height ?? 24
+      }" viewBox="0 0 20 10" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path class="filling" fill-rule="evenodd" clip-rule="evenodd" d="M9 8H5C3.35 8 2 6.65 2 5C2 3.35 3.35 2 5 2H9V0L5 0C2.24 0 0 2.24 0 5C0 7.76 2.24 10 5 10H9V8ZM15 0L11 0V2H15C16.65 2 18 3.35 18 5C18 6.65 16.65 8 15 8H11V10H15C17.76 10 20 7.76 20 5C20 2.24 17.76 0 15 0ZM14 4H6V6H14V4Z"/>
       </svg>
 
       `;
     } else if (type === "export") {
       this.svg = `
-      <svg width="36" class="icon, ${type}" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="${width ?? 24}" class="icon, ${type}" height="${
+        height ?? 24
+      }" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="check_circle_outline_24px">
          <path class="filling" id="icon/action/check_circle_outline_24px" fill-rule="evenodd" clip-rule="evenodd" d="M18 3C9.72 3 3 9.72 3 18C3 26.28 9.72 33 18 33C26.28 33 33 26.28 33 18C33 9.72 26.28 3 18 3ZM18 30C11.385 30 6 24.615 6 18C6 11.385 11.385 6 18 6C24.615 6 30 11.385 30 18C30 24.615 24.615 30 18 30ZM15 21.255L24.885 11.37L27 13.5L15 25.5L9 19.5L11.115 17.385L15 21.255Z"/>
         </g>
@@ -41,17 +51,39 @@ export default class Button {
       `;
     } else if (type === "cancelExport") {
       this.svg = `
-      <svg width="30"class="icon, ${type}" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="${width ?? 24}"class="icon, ${type}" height="${
+        height ?? 24
+      }" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" class="filling" clip-rule="evenodd" d="M15 0C6.705 0 0 6.705 0 15C0 23.295 6.705 30 15 30C23.295 30 30 23.295 30 15C30 6.705 23.295 0 15 0ZM15 27C8.385 27 3 21.615 3 15C3 8.385 8.385 3 15 3C21.615 3 27 8.385 27 15C27 21.615 21.615 27 15 27ZM15 12.885L20.385 7.5L22.5 9.615L17.115 15L22.5 20.385L20.385 22.5L15 17.115L9.615 22.5L7.5 20.385L12.885 15L7.5 9.615L9.615 7.5L15 12.885Z" />
       </svg>
   `;
     } else if (type === "edit") {
       this.svg = `
-      <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="icon, ${type}" width="${width ?? 20}" height="${
+        height ?? 20
+      }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="mode_24px">
         <path class="filling" id="icon/editor/mode_24px" fill-rule="evenodd" clip-rule="evenodd" d="M17.6588 3C17.4088 3 17.1487 3.10001 16.9587 3.28999L15.1288 5.12L18.8788 8.87L20.7087 7.03999C21.0988 6.64999 21.0988 6.02 20.7087 5.63L18.3687 3.28999C18.1688 3.09 17.9188 3 17.6588 3ZM14.0587 9.02L14.9788 9.94L5.91876 19H4.99875V18.08L14.0587 9.02ZM2.99875 17.25L14.0587 6.19L17.8087 9.94L6.74875 21H2.99875V17.25Z" fill-opacity="0.54"/>
         </g>
       </svg> 
+      `;
+    } else if (type === "help") {
+      this.svg = `
+        <svg class="icon, ${type}" width="${width ?? 24}" height="${
+        height ?? 24
+      }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="help_outline_24px">
+            <path class="filling"  id="icon/action/help_outline_24px" fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.48 6.47998 2 12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.47998 22 2 17.52 2 12ZM13 16V18H11V16H13ZM12 20C7.58997 20 4 16.41 4 12C4 7.59 7.58997 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM8 10C8 7.79 9.79004 6 12 6C14.21 6 16 7.79 16 10C16 11.2829 15.21 11.9733 14.4408 12.6455C13.7111 13.2833 13 13.9046 13 15H11C11 13.1787 11.9421 12.4566 12.7704 11.8217C13.4203 11.3236 14 10.8792 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10H8Z"/>
+          </g>
+        </svg>
+        `;
+    } else if (type === "cog") {
+      this.svg = `
+      <svg class="icon, ${type}" width="${width ?? 24}" height="${
+        height ?? 24
+      }" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="filling" fill-rule="evenodd"  clip-rule="evenodd" d="M26.569 15C26.569 15.51 26.5227 15.99 26.4611 16.47L29.7148 18.945C30.0078 19.17 30.0849 19.575 29.8999 19.905L26.8157 25.095C26.677 25.335 26.4148 25.47 26.1526 25.47C26.0601 25.47 25.9676 25.455 25.8751 25.425L22.0353 23.925C21.2334 24.51 20.3698 25.02 19.4292 25.395L18.8432 29.37C18.7969 29.73 18.4731 30 18.0876 30H11.9192C11.5337 30 11.2099 29.73 11.1636 29.37L10.5776 25.395C9.63697 25.02 8.7734 24.525 7.97152 23.925L4.13174 25.425C4.05464 25.455 3.96211 25.47 3.86959 25.47C3.59202 25.47 3.32986 25.335 3.19107 25.095L0.106915 19.905C-0.0781347 19.575 -0.00103071 19.17 0.291964 18.945L3.54575 16.47C3.48407 15.99 3.43781 15.495 3.43781 15C3.43781 14.505 3.48407 14.01 3.54575 13.53L0.291964 11.055C-0.00103071 10.83 -0.0935555 10.425 0.106915 10.095L3.19107 4.905C3.32986 4.665 3.59202 4.53 3.85417 4.53C3.94669 4.53 4.03922 4.545 4.13174 4.575L7.97152 6.075C8.7734 5.49 9.63697 4.98 10.5776 4.605L11.1636 0.63C11.2099 0.27 11.5337 0 11.9192 0H18.0876C18.4731 0 18.7969 0.27 18.8432 0.63L19.4292 4.605C20.3698 4.98 21.2334 5.475 22.0353 6.075L25.8751 4.575C25.9522 4.545 26.0447 4.53 26.1372 4.53C26.4148 4.53 26.677 4.665 26.8157 4.905L29.8999 10.095C30.0849 10.425 30.0078 10.83 29.7148 11.055L26.4611 13.53C26.5227 14.01 26.569 14.49 26.569 15ZM23.4849 15C23.4849 14.685 23.4694 14.37 23.4077 13.905L23.1919 12.21L24.5643 11.16L26.2143 9.88501L25.1349 8.07001L23.1764 8.83501L21.5418 9.48001L20.1385 8.43001C19.5217 7.98001 18.9049 7.63501 18.2418 7.36501L16.6072 6.72001L16.3604 5.02501L16.0674 3.00001H13.924L13.6155 5.02501L13.3688 6.72001L11.7342 7.36501C11.1019 7.62001 10.4697 7.98001 9.8066 8.46001L8.41873 9.48001L6.81497 8.85001L4.85652 8.08501L3.77707 9.90001L5.44252 11.16L6.81497 12.21L6.59908 13.905C6.55281 14.355 6.52197 14.7 6.52197 15C6.52197 15.3 6.55281 15.645 6.59908 16.11L6.81497 17.805L5.44252 18.855L3.77707 20.115L4.85652 21.93L6.81497 21.165L8.44957 20.52L9.85286 21.57C10.4697 22.02 11.0865 22.365 11.7496 22.635L13.3842 23.28L13.631 24.975L13.924 27H16.0829L16.3913 24.975L16.638 23.28L18.2726 22.635C18.9049 22.38 19.5371 22.02 20.2002 21.54L21.5881 20.52L23.1919 21.15L25.1503 21.915L26.2298 20.1L24.5643 18.84L23.1919 17.79L23.4077 16.095C23.454 15.645 23.4849 15.315 23.4849 15ZM15.0034 8.99999C11.5954 8.99999 8.83508 11.685 8.83508 15C8.83508 18.315 11.5954 21 15.0034 21C18.4114 21 21.1717 18.315 21.1717 15C21.1717 11.685 18.4114 8.99999 15.0034 8.99999ZM11.9193 15C11.9193 16.65 13.3071 18 15.0034 18C16.6997 18 18.0876 16.65 18.0876 15C18.0876 13.35 16.6997 12 15.0034 12C13.3071 12 11.9193 13.35 11.9193 15Z" />
+      </svg>
       `;
     } else throw new Error("Unknown AddButton type");
   }

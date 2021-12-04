@@ -22,7 +22,8 @@
 /* ~~~~~~~~~~~~~ hover interactions ~~~~~~~~~~~~ */
 
 .bookmark-link-edit-button,
-.category-name-edit-button {
+.category-name-edit-button,
+.search-bar-edit-button {
   visibility: hidden;
   justify-content: left;
 }
@@ -32,17 +33,82 @@
   visibility: visible;
 }
 
-.dropzone > a {
-  cursor: move;
+.search-bar-title > .text-content:hover ~ .button {
+  visibility: visible;
 }
+
+.search-bar-title {
+  cursor: pointer;
+}
+
+.dropzone > a,
 .dropzone > h1 {
   cursor: move;
 }
 
 /* ~~~~~~~~~~ button animations ~~~~~~~~~~ */
 
+@keyframes shake-hover {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes infinite-rotate-hover {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-forward-90 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes rotate-back-90 {
+  from {
+    transform: rotate(90deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
 .button:hover {
   cursor: pointer;
+}
+
+.button {
+  animation: visible-animate 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.link-button.active {
+  animation-fill-mode: forwards !important;
+  animation: rotate-forward-90 0.2s;
+}
+
+.link-button {
+  animation-fill-mode: forwards !important;
+  animation: rotate-back-90 0.2s;
 }
 
 .cancelExport,
@@ -55,16 +121,22 @@
 
 .cancelExport:hover,
 .cancel:hover {
-  transform: rotate(20deg);
+  transform: rotate(15deg);
 }
 .delete:hover {
   transform: translate(0, -2px);
 }
-.link:hover {
-  transform: rotate(90deg);
-}
 .add:hover {
   transform: scale(1.1);
+}
+.export:hover {
+  transform: translate(0, 2px);
+}
+.help:hover {
+  animation: shake-hover 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.cog:hover {
+  animation: infinite-rotate-hover 5s linear infinite;
 }
 
 /* ~~~~~~~~~~ in-transitions  ~~~~~~~~~ */
@@ -111,6 +183,7 @@
 }
 .secondRow {
   animation: slide-down-animate 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+  z-index: -100;
 }
 
 /* ~~~~~~~~~~~ out-transitions ~~~~~~~~~~~ */
@@ -185,6 +258,13 @@ body {
   z-index: 100;
 }
 
+/* The mode toggle button (edit ↔︎ view) */
+.modeToggle.bottom {
+  position: absolute;
+  bottom: 0;
+  z-index: 100;
+}
+
 .button {
   display: inline;
 }
@@ -193,17 +273,26 @@ body {
   background: none;
   padding-right: 00.25rem;
   padding-left: 00.25rem;
+  display: flex;
+  flex-direction: row;
   /* center it hotizontally*/
 }
 
 .button .icon {
-  justify-content: center;
   /* TODO: center the icon horizontally and vertically */
   display: inline;
 }
 
 .filling {
   fill: var(--color1);
+}
+
+.add-category-button .filling {
+  fill: var(--color9);
+}
+
+.add-bookmark-button .filling {
+  fill: var(--color6);
 }
 
 /* ~~~~~~~~~~~~ tooltip window ~~~~~~~~~~~ */
@@ -218,6 +307,7 @@ body {
   position: absolute;
   top: 2rem;
   width: 4rem;
+  white-space: pre-line;
 
   pointer-events: none;
   opacity: 0;
@@ -244,6 +334,14 @@ body {
 
 *[data-tooltip].modeToggle.left::after {
   left: 2.2rem;
+}
+
+*[data-tooltip].modeToggle.bottom::after {
+  top: -4.2rem;
+}
+
+*[data-tooltip].modeToggle.bottom.big::after {
+  width: 8rem;
 }
 
 *[data-tooltip]:hover::after {

@@ -121,6 +121,7 @@ export default class EditTreeColumnCategory extends TreeColumnCategory {
   // TODO: create extra class for this??
   #newAddCategoryButton = (ul) => {
     const addBookmarkButton = new Button("add").html();
+    addBookmarkButton.classList.add("add-bookmark-button");
     addBookmarkButton.style.paddingLeft = "1.5rem";
     addBookmarkButton.addEventListener("click", () => {
       // create new empty bookmark element
