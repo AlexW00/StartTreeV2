@@ -1,7 +1,10 @@
-// keeps track of whether the last draggable element was dropped successfully or not
+// ====================================================== //
+// ==================== makeDraggable =================== //
+// ====================================================== //
+
+// helper method to make an element draggable, configured with DragOptions
+
 let lastDropWasValid = false;
-const nodeStack = [];
-const highlightStack = [];
 export default (element, dragOptions, callback) => {
   element.draggable = true;
   element.classList.add("dropzone");
@@ -41,7 +44,7 @@ export default (element, dragOptions, callback) => {
   // called when ANOTHER element is dropped on this element
   element.addEventListener("drop", (event) => {
     event.preventDefault();
-    lastDropWasValid = _isValidDragItem(
+    lastDropWasValid = _isValidDropzone(
       JSON.parse(event.dataTransfer.getData("text"))
     );
     if (lastDropWasValid) {
@@ -50,8 +53,9 @@ export default (element, dragOptions, callback) => {
     }
   });
 
-  const _isValidDragItem = (dragItem) => {
-    return _isValid(dragItem, dragOptions.validDragItems);
+  const _isValidDropzone = (dropZone) => {
+    // check if an element of dropzone.classlist is in the array dragOptions.classList
+    return _isValid(dropZone, dragOptions.validDropzones);
   };
 
   const _isValid = (element, classes) => {

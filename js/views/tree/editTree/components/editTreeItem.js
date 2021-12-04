@@ -45,7 +45,7 @@ export default class EditTreeItem extends TreeItem {
     dragOptionsData.classList = ["bookmark"];
     const dragOptions = new DragOptions({
       data: JSON.stringify(dragOptionsData),
-      validDragItems: ["bookmark"],
+      validDropzones: ["bookmark"],
     });
 
     makeDraggable(this.root, dragOptions, (type, event) => {

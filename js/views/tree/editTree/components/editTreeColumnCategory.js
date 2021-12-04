@@ -49,7 +49,7 @@ export default class EditTreeColumnCategory extends TreeColumnCategory {
     dragOptionsData.classList = ["category"];
     const dragOptions = new DragOptions({
       data: JSON.stringify(dragOptionsData),
-      validDragItems: ["category", "bookmark"],
+      validDropzones: ["category", "bookmark"],
     });
     makeDraggable(this.root, dragOptions, (type, event) => {
       if (type === "drop") {
