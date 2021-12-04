@@ -52,12 +52,18 @@ export default class Editor {
   // returns the html for this editor
   html() {
     const li = document.createElement(this.nodeType);
-    li.setAttribute("draggable", "false");
+    li.setAttribute("draggable", "true");
+    li.ondragstart = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      return false;
+    };
     li.classList.add("editor");
     const firstRow = document.createElement("div");
     firstRow.classList.add("firstRow");
     firstRow.appendChild(this.#createInputField(li));
     firstRow.appendChild(this.#createToolbar(li));
+
     li.appendChild(firstRow);
     if (this.linkEditorIsOpen) li.appendChild(this.#secondRowHtml());
     return li;
@@ -66,17 +72,19 @@ export default class Editor {
   #secondRowHtml = () => {
     this.linkEditorIsOpen = true;
     const secondRow = document.createElement("div");
+
     this.secondRow = secondRow;
     secondRow.classList.add("secondRow");
     this.toolbar.linkButton.classList.add("active");
 
     const input = document.createElement("input");
-    input.addEventListener("focusout", (event) => {
+    input.addEventListener("blur", (e) => {
       setTimeout(() => {
-        if (!this.root.contains(document.activeElement)) {
+        if (!this.root.contains(e.relatedTarget ?? e.explicitOriginalTarget)) {
+          console.log(e.relatedTarget ?? e.explicitOriginalTarget);
           this.save();
         }
-      });
+      }, 20);
     });
 
     input.type = "text";
@@ -97,19 +105,14 @@ export default class Editor {
   #createInputField(li) {
     // create input field
     const input = document.createElement("input");
-    input.addEventListener("focusout", () => {
+    input.addEventListener("blur", (e) => {
       setTimeout(() => {
-        if (!li.contains(document.activeElement)) {
+        if (!this.root.contains(e.relatedTarget ?? e.explicitOriginalTarget)) {
           this.save();
         }
-      });
+      }, 20);
     });
 
-    input.addEventListener("focus", () => {
-      input.setAttribute("draggable", "false");
-      input.parentNode.setAttribute("draggable", "false");
-      input.parentNode.parentNode.setAttribute("draggable", "false");
-    });
     input.type = "text";
     input.value = this.text;
     input.addEventListener("keydown", (e) => {
@@ -125,6 +128,7 @@ export default class Editor {
   // creates the toolbar html
   #createToolbar(li) {
     this.toolbar = new Toolbar(this.buttons, (buttonName) => {
+      console.log(buttonName);
       if (buttonName === "cancel") {
         this.close();
       } else if (buttonName === "delete") {
