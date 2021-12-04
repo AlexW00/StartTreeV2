@@ -295,6 +295,10 @@ body {
   fill: var(--color6);
 }
 
+.search-bar-edit-button {
+  display: inline;
+}
+
 /* ~~~~~~~~~~~~ tooltip window ~~~~~~~~~~~ */
 
 *[data-tooltip] {
