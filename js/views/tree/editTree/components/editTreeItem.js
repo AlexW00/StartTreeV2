@@ -5,6 +5,7 @@
 import DragOptions from "../../../../helper/dragOptions.js";
 import makeDraggable from "../../../../helper/makeDraggable.js";
 import { insertAfter } from "../../../../helper/utils.js";
+import Button from "../../../other/button.js";
 import TreeItem from "../../components/treeItem.js";
 import Editor from "../editor/components/editor.js";
 import EditorOptions from "../editor/helperObjects/editorOptions.js";
@@ -25,6 +26,8 @@ export default class EditTreeItem extends TreeItem {
 
   renderHtml() {
     this.root = super.renderHtml();
+    this.editButton = this.editButtonHtml();
+    this.root.appendChild(this.editButton);
     this.#makeDraggable();
     return this.root;
   }
@@ -39,6 +42,13 @@ export default class EditTreeItem extends TreeItem {
   }
 
   // ~~~~~~~ EditTreeItem methods ~~~~~~ //
+
+  editButtonHtml() {
+    const editButton = new Button("edit"),
+      editButtonHtml = editButton.html();
+    editButtonHtml.classList.add("bookmark-link-edit-button");
+    return editButtonHtml;
+  }
 
   #makeDraggable = () => {
     const dragOptionsData = this.export();

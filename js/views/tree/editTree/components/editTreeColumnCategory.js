@@ -39,10 +39,18 @@ export default class EditTreeColumnCategory extends TreeColumnCategory {
     h1.addEventListener("click", () => {
       this.#categoryTitleClickListener(h1);
     });
+    h1.appendChild(this.editButtonHtml());
     return h1;
   }
 
   // ~~~~~~~ EditTreeColumnCategory methods ~~~~~~~ //
+
+  editButtonHtml() {
+    const editButton = new Button("edit"),
+      editButtonHtml = editButton.html();
+    editButtonHtml.classList.add("category-name-edit-button");
+    return editButtonHtml;
+  }
 
   #makeDraggable = () => {
     const dragOptionsData = this.export();
@@ -153,7 +161,7 @@ export default class EditTreeColumnCategory extends TreeColumnCategory {
         if (editorFinishEvent.type === "save") {
           // if the editor exits with "save", update the category name
           this.name = editorFinishEvent.editResult.text;
-          h1.innerHTML = this.name;
+          h1 = this.categoryTitleHtml();
           this.root.insertBefore(h1, this.bookmarkList);
           this.onUpdate(
             new TreeUpdateEvent({ type: "save", updatedObject: this })

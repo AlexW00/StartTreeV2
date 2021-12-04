@@ -15,29 +15,199 @@
   --branch: 1px solid var(--color12);
 }
 
-/* Highlight of bookmarks*/
+/* ====================================================== */
+/* ===================== Animations ===================== */
+/* ====================================================== */
 
-.li :hover {
-  background: var(--color4);
+/* ~~~~~~~~~~~~~ hover interactions ~~~~~~~~~~~~ */
+
+.bookmark-link-edit-button,
+.category-name-edit-button {
+  visibility: hidden;
+  justify-content: left;
 }
+
+.bookmark-link:hover ~ .bookmark-link-edit-button,
+.category-title:hover ~ .category-name-edit-button {
+  visibility: visible;
+}
+
+.dropzone > a {
+  cursor: move;
+}
+.dropzone > h1 {
+  cursor: move;
+}
+
+/* ~~~~~~~~~~ button animations ~~~~~~~~~~ */
+
+.button:hover {
+  cursor: pointer;
+}
+
+.cancelExport,
+.cancel,
+.link,
+.delete,
+.add {
+  transition: transform 0.2s ease-in-out;
+}
+
+.cancelExport:hover,
+.cancel:hover {
+  transform: rotate(20deg);
+}
+.delete:hover {
+  transform: translate(0, -2px);
+}
+.link:hover {
+  transform: rotate(90deg);
+}
+.add:hover {
+  transform: scale(1.1);
+}
+
+/* ~~~~~~~~~~ in-transitions  ~~~~~~~~~ */
+
+@keyframes scale-animate {
+  from {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes visible-animate {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down-animate {
+  from {
+    opacity: 0;
+    transform: translate(0, -100%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+.category,
+.bookmark,
+.search-bar-title {
+  animation: scale-animate 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.editor {
+  animation: visible-animate 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.secondRow {
+  animation: slide-down-animate 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+/* ~~~~~~~~~~~ out-transitions ~~~~~~~~~~~ */
+
+@keyframes scale-animate-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes visible-animate-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-down-animate-out {
+  from {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -100%);
+  }
+}
+.scale-animate-out {
+  animation: scale-animate-out 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.slide-down-animate-out {
+  animation: slide-down-animate-out 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.visible-animate-out {
+  animation: visible-animate-out 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+/* ====================================================== */
+/* ======================= layout ======================= */
+/* ====================================================== */
+
 html {
-  font-size: 22px;
+  font-size: 20px;
 }
 
 body {
   background: var(--background);
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ~~~~~~~~~~~~~ mode toggles & buttons ~~~~~~~~~~~~ */
+
+.modeToggle {
+  margin: 0.4rem;
+  justify-content: center;
 }
 
 /* The mode toggle button (edit ↔︎ view) */
-#modeToggle {
+.modeToggle.right {
   position: absolute;
-  top: 0;
   right: 0;
-  padding: 10px;
   z-index: 100;
 }
 
-/* Tooltip for hovering actin buttons (export/cancel) */
+.button {
+  display: inline;
+}
+
+.button {
+  background: none;
+  padding-right: 00.25rem;
+  padding-left: 00.25rem;
+  /* center it hotizontally*/
+}
+
+.button .icon {
+  justify-content: center;
+  /* TODO: center the icon horizontally and vertically */
+  display: inline;
+}
+
+.filling {
+  fill: var(--color1);
+}
+
+/* ~~~~~~~~~~~~ tooltip window ~~~~~~~~~~~ */
+
 *[data-tooltip] {
   position: absolute;
 }
@@ -68,11 +238,11 @@ body {
   box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.4);
 }
 
-*[data-tooltip]#modeToggle::after {
+*[data-tooltip].modeToggle.right::after {
   right: 2.2rem;
 }
 
-*[data-tooltip]#exportButton::after {
+*[data-tooltip].modeToggle.left::after {
   left: 2.2rem;
 }
 
@@ -80,12 +250,14 @@ body {
   opacity: 1;
 }
 
+/* ~~~~~~~~~~~~~~~~ editor ~~~~~~~~~~~~~~~ */
+
 .editor {
   height: fit-content;
   display: flex;
   align-content: flex-start;
   flex-direction: column;
-  max-width: 15rem;
+  width: 100%;
 }
 
 .editor .firstRow {
@@ -113,47 +285,7 @@ body {
   display: flex;
 }
 
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-  outline: none;
-}
-
-/* Button class */
-.button {
-  background: none;
-  padding-right: 00.25rem;
-  padding-left: 00.25rem;
-  /* center it hotizontally*/
-}
-
-.button .icon {
-  justify-content: center;
-  /* TODO: center the icon horizontally and vertically */
-  display: inline;
-}
-
-.filling {
-  fill: var(--color1);
-}
-
-/* Tree general */
-.container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.prompt {
-  font-family: var(--font);
-  color: var(--color5);
-}
-
-.prompt ~ .prompt {
-  padding: 1.5rem 0 0.3125rem;
-}
+/* ~~~~~~~~~~~~~ tree general ~~~~~~~~~~~~ */
 
 span {
   color: var(--color10);
@@ -165,6 +297,69 @@ h1 {
   font-size: 1rem;
   font-weight: normal;
   color: var(--color9);
+}
+
+.prompt {
+  font-family: var(--font);
+  color: var(--color5);
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+/* ~~~~~~~~~~~~ tree container ~~~~~~~~~~~ */
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.prompt ~ .prompt {
+  padding: 1.5rem 0 0.3125rem;
+}
+
+/* ~~~~~~~~~~ tree category row ~~~~~~~~~~ */
+
+.row {
+  display: flex;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* ~~~~~~~~~ tree category column ~~~~~~~~ */
+
+.column {
+  flex: 50%;
+  padding: 5px;
+}
+
+/* ~~~~~~~~~~~~ tree bookmark category ~~~~~~~~~~~~ */
+
+.category h1 > * {
+  white-space: nowrap;
+  display: inline;
+  justify-items: right;
+  display: inline;
+  flex-direction: row;
+}
+
+.category {
+  min-width: 12rem;
+  max-width: 20rem;
+}
+
+li.bookmark > * {
+  display: inline-block;
 }
 
 .tree > ul {
@@ -183,10 +378,6 @@ ul {
 
 li {
   position: relative;
-}
-
-.category {
-  min-width: 11rem;
 }
 
 li::before,
@@ -227,6 +418,8 @@ a:hover {
   */
 }
 
+/* ~~~~~~~~~~~~ theme changer ~~~~~~~~~~~~ */
+
 form h1 {
   padding-left: 0.125rem;
 }
@@ -241,21 +434,6 @@ input {
   border-style: solid;
   padding-top: 4px;
   padding-bottom: 4px;
-}
-
-.column {
-  flex: 50%;
-  padding: 5px;
-}
-
-.row {
-  display: flex;
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
 }
 
 .theme-changer-container {

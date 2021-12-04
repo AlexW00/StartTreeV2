@@ -30,6 +30,7 @@ export default class EditSearchBar extends SearchBar {
 
   #sectionNameHtml = () => {
     const sectionName = super.sectionNameHtml();
+    sectionName.classList.add("search-bar-title");
 
     sectionName.addEventListener("click", () => {
       new Editor(
@@ -48,9 +49,9 @@ export default class EditSearchBar extends SearchBar {
           if (editorFinishEvent.type === "save") {
             this.searchEngineUrl = editorFinishEvent.editResult.link;
             this.searchEngineNameShort = editorFinishEvent.editResult.text;
-            this.root.prepend(this.sectionNameHtml());
+            this.root.prepend(this.#sectionNameHtml());
           } else {
-            this.root.prepend(this.sectionNameHtml());
+            this.root.prepend(this.#sectionNameHtml());
           }
         }
       );

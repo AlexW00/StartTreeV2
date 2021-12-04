@@ -42,7 +42,10 @@ export default class TreeColumnCategory {
   categoryTitleHtml() {
     const h1 = document.createElement("h1");
     h1.setAttribute("id", this.id + "-header");
-    h1.innerHTML = this.name;
+    const span = document.createElement("span");
+    span.classList.add("category-title");
+    span.innerText = this.name;
+    h1.appendChild(span);
     return h1;
   }
 

@@ -27,6 +27,7 @@ export default class TreeItem {
 
   linkHtml() {
     const a = document.createElement("a");
+    a.classList.add("bookmark-link");
     a.href = this.generateLinkText(this.url);
     a.textContent = this.name;
     return a;

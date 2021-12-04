@@ -31,8 +31,9 @@ export default class Editor {
 
   // replaces the target element with this editor
   #replaceEditorTarget() {
+    this.root = this.html();
     this.parentNode.replaceChild(
-      this.html(),
+      this.root,
       this.parentNode.querySelector("#" + this.editorTarget.id)
     );
 
@@ -133,11 +134,6 @@ export default class Editor {
     li.appendChild(secondRow);
   }
 
-  #closeLinkInput(li) {
-    this.linkEditorIsOpen = false;
-    li.querySelector(".secondRow").remove();
-  }
-
   // ~~~~~~~ Toolbar event callbacks ~~~~~~ //
 
   save() {
@@ -164,16 +160,31 @@ export default class Editor {
   }
 
   delete() {
-    this.#remove();
-    this.cb(new EditorFinishEvent("delete", null, this.index));
+    this.#closeLinkInput().then(() => {
+      this.root.classList.add("scale-animate-out");
+      this.root.onanimationend = () => {
+        this.#remove();
+        this.cb(new EditorFinishEvent("delete", null, this.index));
+      };
+    });
+  }
+
+  #closeLinkInput() {
+    if (!this.linkEditorIsOpen) return Promise.resolve();
+    return new Promise((resolve) => {
+      const linkInput = this.root.querySelector(".secondRow");
+      linkInput.classList.add("slide-down-animate-out");
+      linkInput.onanimationend = () => {
+        this.linkEditorIsOpen = false;
+        linkInput.remove();
+        resolve();
+      };
+    });
   }
 
   #remove() {
     this.isClosed = true;
-    const el = this.parentNode.querySelector(".editor");
-    if (!el) return;
-
-    this.parentNode.removeChild(el);
     Editor.openInstance = null;
+    if (this.root) this.root.remove();
   }
 }
