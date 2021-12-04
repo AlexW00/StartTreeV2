@@ -66,8 +66,16 @@ export default class Editor {
 
     li.appendChild(firstRow);
     if (this.linkEditorIsOpen) li.appendChild(this.#secondRowHtml());
+    this.#setMouseDownListener();
     return li;
   }
+
+  #setMouseDownListener = () => {
+    document.addEventListener("mousedown", (e) => {
+      if (this.root.contains(e.target)) return;
+      this.save();
+    });
+  };
 
   #secondRowHtml = () => {
     this.linkEditorIsOpen = true;
@@ -78,14 +86,6 @@ export default class Editor {
     this.toolbar.linkButton.classList.add("active");
 
     const input = document.createElement("input");
-    input.addEventListener("blur", (e) => {
-      setTimeout(() => {
-        if (!this.root.contains(e.relatedTarget ?? e.explicitOriginalTarget)) {
-          console.log(e.relatedTarget ?? e.explicitOriginalTarget);
-          this.save();
-        }
-      }, 20);
-    });
 
     input.type = "text";
     input.value = this.link;
@@ -105,13 +105,6 @@ export default class Editor {
   #createInputField(li) {
     // create input field
     const input = document.createElement("input");
-    input.addEventListener("blur", (e) => {
-      setTimeout(() => {
-        if (!this.root.contains(e.relatedTarget ?? e.explicitOriginalTarget)) {
-          this.save();
-        }
-      }, 20);
-    });
 
     input.type = "text";
     input.value = this.text;
