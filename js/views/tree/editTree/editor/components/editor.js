@@ -52,15 +52,46 @@ export default class Editor {
   // returns the html for this editor
   html() {
     const li = document.createElement(this.nodeType);
+    li.setAttribute("draggable", "false");
     li.classList.add("editor");
     const firstRow = document.createElement("div");
     firstRow.classList.add("firstRow");
     firstRow.appendChild(this.#createInputField(li));
     firstRow.appendChild(this.#createToolbar(li));
     li.appendChild(firstRow);
-    if (this.linkEditorIsOpen) this.#openLinkInput(li);
+    if (this.linkEditorIsOpen) li.appendChild(this.#secondRowHtml());
     return li;
   }
+
+  #secondRowHtml = () => {
+    this.linkEditorIsOpen = true;
+    const secondRow = document.createElement("div");
+    this.secondRow = secondRow;
+    secondRow.classList.add("secondRow");
+    this.toolbar.linkButton.classList.add("active");
+
+    const input = document.createElement("input");
+    input.addEventListener("focusout", (event) => {
+      setTimeout(() => {
+        if (!this.root.contains(document.activeElement)) {
+          this.save();
+        }
+      });
+    });
+
+    input.type = "text";
+    input.value = this.link;
+    input.addEventListener("keydown", (e) => {
+      this.link = input.value;
+      if (e.keyCode === 13 && input === document.activeElement) {
+        e.preventDefault();
+        this.save(this.root.parentNode);
+      }
+    });
+
+    secondRow.appendChild(input);
+    return secondRow;
+  };
 
   // creates an input field
   #createInputField(li) {
@@ -73,6 +104,7 @@ export default class Editor {
         }
       });
     });
+
     input.addEventListener("focus", () => {
       input.setAttribute("draggable", "false");
       input.parentNode.setAttribute("draggable", "false");
@@ -115,30 +147,7 @@ export default class Editor {
   }
 
   #openLinkInput(li) {
-    this.linkEditorIsOpen = true;
-    const secondRow = document.createElement("div");
-    secondRow.classList.add("secondRow");
-    this.toolbar.linkButton.classList.add("active");
-
-    const input = document.createElement("input");
-    input.addEventListener("focusout", (event) => {
-      setTimeout(() => {
-        if (!li.contains(document.activeElement)) {
-          this.save();
-        }
-      });
-    });
-    input.type = "text";
-    input.value = this.link;
-    input.addEventListener("keydown", (e) => {
-      this.link = input.value;
-      if (e.keyCode === 13 && input === document.activeElement) {
-        e.preventDefault();
-        this.save(li.parentNode);
-      }
-    });
-    secondRow.appendChild(input);
-    li.appendChild(secondRow);
+    li.appendChild(this.#secondRowHtml());
   }
 
   // ~~~~~~~ Toolbar event callbacks ~~~~~~ //
