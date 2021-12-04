@@ -1,32 +1,65 @@
 import ThemeChanger from "../themechanger/theme-changer.js";
 import SearchBar from "./searchBar.js";
 import TreeColumn from "./treeColumn.js";
-import Button from "../../other/button.js";
 
 // ====================================================== //
 // ======================== Tree ======================== //
 // ====================================================== //
 
 export default class Tree {
-  constructor(config, isEditing) {
-    this.bookmarkColumns = config.bmc.map(
-      (column) => new TreeColumn(column, isEditing, this.#onColumnUpdate)
-    );
-    this.searchEngine = config.s;
+  constructor(config) {
     this.version = config.v || "0.0";
-    this.isEditing = isEditing;
-    this.searchBar = new SearchBar(config.s, this.isEditing);
-    this.themeChanger = new ThemeChanger(config.t);
+
+    this.bookmarkColumns = this.initBookmarkColumns(config.bmc);
+    this.themeChanger = this.initThemeChanger(config.t);
+    this.searchBar = this.initSearchBar(config.s);
   }
 
-  // returns a div of class "container", containing the entire bookmark tree
-  html = () => {
+  // ~~~~~~~~ initialization methods ~~~~~~~ //
+
+  initBookmarkColumns(config) {
+    return config.map((column) => new TreeColumn(column));
+  }
+
+  initSearchBar(config) {
+    return new SearchBar(config);
+  }
+
+  initThemeChanger(config) {
+    return new ThemeChanger(config);
+  }
+
+  // ~~~~~~~~~~~~~html methods ~~~~~~~~~~~~ //
+
+  html() {
+    return this.root ?? this.renderHtml();
+  }
+
+  renderHtml() {
+    this.root = this.rootHtml();
+
+    this.titlePrompt = this.titlePromptHtml();
+    this.root.appendChild(this.titlePrompt);
+
+    this.bookmarkRow = this.bookmarkRowHtml();
+    this.root.appendChild(this.bookmarkRow);
+
+    // EDIT MODE ONLY
+    if (this.isEditing)
+      prompt.appendChild(this.newAddColumnButton(this.bookmarkRow));
+
+    this.root.appendChild(this.searchBar.html());
+
+    return this.root;
+  }
+
+  rootHtml() {
     const container = document.createElement("div");
     container.classList.add("container");
+    return container;
+  }
 
-    if (this.isEditing) {
-      container.appendChild(this.themeChanger.html());
-    }
+  titlePromptHtml() {
     const prompt = document.createElement("div");
     prompt.classList.add("prompt");
     prompt.innerHTML = "~ ";
@@ -34,51 +67,19 @@ export default class Tree {
     symSpan.innerHTML = "λ ";
     prompt.appendChild(symSpan);
     prompt.innerHTML += " tree";
-    container.appendChild(prompt);
+    return prompt;
+  }
 
+  bookmarkRowHtml() {
     const row = document.createElement("div");
     row.classList.add("row");
-
-    // add the add column button if edit mode is on
-    if (this.isEditing) prompt.appendChild(this.#newAddColumnButton(row));
-
-    // add the bookmark columns
     this.bookmarkColumns.forEach((bookmarkColumn) => {
       row.appendChild(bookmarkColumn.html());
     });
-    container.appendChild(row);
+    return row;
+  }
 
-    container.appendChild(this.searchBar.html());
-
-    // add the theme changer if edit mode is on
-
-    return container;
-  };
-
-  // creates a new add column button and returns the html element
-  #newAddColumnButton = (row) => {
-    const addColumnButton = new Button("add").html();
-    addColumnButton.addEventListener("click", () => {
-      const newBookmarkColumn = new TreeColumn(
-        [{ cn: "new category", b: [] }],
-        this.isEditing,
-        this.#onColumnUpdate
-      );
-      const newBookmarkColumnHtml = newBookmarkColumn.html();
-      row.appendChild(newBookmarkColumnHtml);
-      this.bookmarkColumns.push(newBookmarkColumn);
-    });
-    return addColumnButton;
-  };
-
-  // callback for when a bookmark column is updated
-  #onColumnUpdate = (treeUpdateEvent) => {
-    if (treeUpdateEvent.type === "delete") {
-      // remove the column from the tree by its id
-      const index = this.bookmarkColumns.indexOf(treeUpdateEvent.updatedObject);
-      this.bookmarkColumns.splice(index, 1);
-    }
-  };
+  // ~~~~~~~~~~~~~ export ~~~~~~~~~~~ //
 
   export() {
     return {

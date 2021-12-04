@@ -15,6 +15,8 @@
   --branch: 1px solid var(--color12);
 }
 
+/* Highlight of bookmarks*/
+
 .li :hover {
   background: var(--color4);
 }
@@ -25,25 +27,8 @@ html {
 body {
   background: var(--background);
 }
-.drag-over-item {
-  background: var(--color1);
-}
 
-.drag-under-item.bookmark {
-  border-bottom: 1px solid red;
-}
-
-.drag-under-item.category > h1 {
-  border-bottom: 1px solid red;
-}
-
-.drag-item * {
-  background: var(--color1);
-}
-
-.dropzone * {
-}
-
+/* The mode toggle button (edit ↔︎ view) */
 #modeToggle {
   position: absolute;
   top: 0;
@@ -52,14 +37,7 @@ body {
   z-index: 100;
 }
 
-.editor {
-  height: fit-content;
-  display: flex;
-  align-content: flex-start;
-  flex-direction: column;
-  max-width: 15rem;
-}
-
+/* Tooltip for hovering actin buttons (export/cancel) */
 *[data-tooltip] {
   position: absolute;
 }
@@ -101,6 +79,15 @@ body {
 *[data-tooltip]:hover::after {
   opacity: 1;
 }
+
+.editor {
+  height: fit-content;
+  display: flex;
+  align-content: flex-start;
+  flex-direction: column;
+  max-width: 15rem;
+}
+
 .editor .firstRow {
   display: flex;
   height: fit-content;
@@ -133,10 +120,7 @@ button:focus {
   outline: none;
 }
 
-.filling {
-  fill: var(--color1);
-}
-
+/* Button class */
 .button {
   background: none;
   padding-right: 00.25rem;
@@ -150,6 +134,11 @@ button:focus {
   display: inline;
 }
 
+.filling {
+  fill: var(--color1);
+}
+
+/* Tree general */
 .container {
   position: absolute;
   top: 50%;

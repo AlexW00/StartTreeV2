@@ -1,4 +1,4 @@
-import Tree from "../views/tree/components/tree.js";
+import EditTree from "../views/tree/editTree/components/editTree.js";
 import { parse, stringify } from "../helper/jsurl.js";
 import Button from "../views/other/button.js";
 
@@ -7,7 +7,7 @@ const urlParams = new URLSearchParams(queryString);
 const exportUrlPrefix = location.host + location.pathname + "?t=";
 const treeConfig = parse(urlParams.get("t")) || {};
 
-const t = new Tree(treeConfig, true);
+const t = new EditTree(treeConfig, true);
 document.body.appendChild(t.html());
 
 // ADD NEW BUTTON
