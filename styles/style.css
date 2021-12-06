@@ -102,12 +102,12 @@
 }
 
 .link-button.active {
-  animation-fill-mode: forwards;
+  animation-fill-mode: forwards !important;
   animation: rotate-forward-90 0.2s;
 }
 
 .link-button {
-  animation-fill-mode: forwards;
+  animation-fill-mode: forwards !important;
   animation: rotate-back-90 0.2s;
 }
 
