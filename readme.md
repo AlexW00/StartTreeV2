@@ -92,3 +92,7 @@ If you want to contribute, feel free to make a pull request. Please keep it simp
 ## Credits
 
 StartTreeV2 is based on a static website generated using [StartTree](https://github.com/Paul-Houser/StartTree). Huge Thanks @Paul-Houser for creating such an awesome project!
+
+How StartTreeV2 differs from StartTree:
+
+This version is a website hosted on Github pages, which means you do not have to host it yourself. To configure your tree, I added a web editor, which allows editing the tree directly in the browser. That means you do not have to write a yaml config and recompile the page every time you want to make a change. Your configuration data is stored in the url, which you simply copy once you are done with your configuration.
