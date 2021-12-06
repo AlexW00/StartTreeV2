@@ -29,11 +29,16 @@ Click the (+) buttons to add new elements:
 
 
 #### Editing elements
+
+<details>
+  <summary> Search engine URLs</summary>
+  Google search url: <code>http://www.google.com/search?q=</code><br/>
+  DuckDuckGo search url: <code>https://duckduckgo.com/?q=</code>
+</details>
   
 Click on elements you would like to edit:
 
  <img src="https://user-images.githubusercontent.com/55558407/144808770-7745d0e2-2a61-4c20-961a-ab97eaca9ef9.gif" alt="editing elements gif" height="400"> 
-
 
 #### Moving elements
   
