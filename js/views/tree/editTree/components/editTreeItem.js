@@ -106,7 +106,7 @@ export default class EditTreeItem extends TreeItem {
           this.name = editorFinishEvent.editResult.text;
           this.url = editorFinishEvent.editResult.link ?? "#";
           parentNode.insertBefore(
-            this.html(),
+            this.renderHtml(),
             parentNode.querySelectorAll("li")[editorFinishEvent.index]
           );
         } else if (editorFinishEvent.type === "cancel") {
