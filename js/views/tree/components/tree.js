@@ -44,10 +44,6 @@ export default class Tree {
     this.bookmarkRow = this.bookmarkRowHtml();
     this.root.appendChild(this.bookmarkRow);
 
-    // EDIT MODE ONLY
-    if (this.isEditing)
-      prompt.appendChild(this.newAddColumnButton(this.bookmarkRow));
-
     this.root.appendChild(this.searchBar.html());
 
     return this.root;

@@ -10,7 +10,6 @@ export default class TreeItem {
     this.id = `bookmark-${TreeItem.count}`;
     this.name = bookmark.n;
     this.url = bookmark.u;
-    this.isEditing = false;
   }
 
   // returns a bookmark category html item

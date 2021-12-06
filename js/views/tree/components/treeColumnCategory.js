@@ -11,7 +11,6 @@ export default class TreeColumnCategory {
     this.id = `category-${TreeColumnCategory.count}`;
     this.name = bookmarkCategory.cn;
     this.treeItems = this.initTreeItems(bookmarkCategory.b);
-    this.isEditing = false;
   }
 
   // ~~~~~~~~~~~~ html elements ~~~~~~~~~~~~ //
