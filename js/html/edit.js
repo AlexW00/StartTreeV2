@@ -11,7 +11,7 @@ const t = new EditTree(treeConfig, true);
 document.body.appendChild(t.html());
 
 const getExportUrl = () => {
-  const host = "//" + location.host,
+  const host = window.location.protocol + "//" + location.host,
     path = location.pathname,
     affix = "?t=",
     data = stringify(t.export());
