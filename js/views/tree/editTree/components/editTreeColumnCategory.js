@@ -145,7 +145,7 @@ export default class EditTreeColumnCategory extends TreeColumnCategory {
             newBookmark.name = editorFinishEvent.editResult.text;
             newBookmark.url = editorFinishEvent.editResult.link ?? "#";
             this.treeItems.push(newBookmark);
-            ul.appendChild(newBookmark.html());
+            ul.appendChild(newBookmark.renderHtml());
           }
         }
       );

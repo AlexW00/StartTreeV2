@@ -105,7 +105,7 @@ export default class EditTreeColumn extends TreeColumn {
         if (editorFinishEvent.type === "save") {
           // append new bookmark category to end of list and push to array
           newBookmarkCategory.name = editorFinishEvent.editResult.text;
-          const newBookmarkCategoryHtml = newBookmarkCategory.html();
+          const newBookmarkCategoryHtml = newBookmarkCategory.renderHtml();
           this.categoryList.appendChild(newBookmarkCategoryHtml);
           newBookmarkCategoryHtml.appendChild(addCategoryButton);
 
