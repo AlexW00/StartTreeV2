@@ -6,7 +6,7 @@
 
 :root {
   --font: "Roboto Mono";
-  /* --background: var(--background) !important; */
+  /* --background: var(--background); */
   /* --foreground: #fffffe; */
   /* --pink: #e53170; */
   /* --red: #f25f4c; */
@@ -102,12 +102,12 @@
 }
 
 .link-button.active {
-  animation-fill-mode: forwards !important;
+  animation-fill-mode: forwards;
   animation: rotate-forward-90 0.2s;
 }
 
 .link-button {
-  animation-fill-mode: forwards !important;
+  animation-fill-mode: forwards;
   animation: rotate-back-90 0.2s;
 }
 
@@ -239,8 +239,8 @@ html {
 
 body {
   background: var(--background);
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 0;
 }
 
 /* ~~~~~~~~~~~~~ mode toggles & buttons ~~~~~~~~~~~~ */
