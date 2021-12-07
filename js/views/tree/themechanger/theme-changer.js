@@ -4,6 +4,7 @@
 
 import ThemeItem from "./themeItem.js";
 export default class ThemeChanger {
+  themeChanger = document.createElement("div");
   // all themes, hardcorded currently
   THEMES = [
     "black-ice",
@@ -30,6 +31,7 @@ export default class ThemeChanger {
   constructor(config) {
     this.themeNr = config.nr ?? 0;
     this.addListener();
+    this.addListenerMouseLeave();
     this.changeTheme(this.THEMES[this.themeNr]);
   }
 
@@ -45,16 +47,15 @@ export default class ThemeChanger {
     themeChangerContainer.classList.add("theme-changer-container");
     const h1 = document.createElement("h1");
     h1.innerHTML = "theme:";
-    const themeChanger = document.createElement("div");
-    themeChanger.classList.add("theme-changer");
+    this.themeChanger.classList.add("theme-changer");
 
     this.THEMES.forEach((theme) => {
       const themeItem = new ThemeItem(theme);
-      themeChanger.appendChild(themeItem.html());
+      this.themeChanger.appendChild(themeItem.html());
     });
 
     themeChangerContainer.appendChild(h1);
-    themeChangerContainer.appendChild(themeChanger);
+    themeChangerContainer.appendChild(this.themeChanger);
 
     root.appendChild(themeChangerContainer);
     return root;
@@ -63,10 +64,22 @@ export default class ThemeChanger {
   addListener = () => {
     document.addEventListener("click", (e) => {
       if (e.target.name === "theme-radio") {
+        const selectedTheme = e.path[1];
         // print index of clicked element
         this.themeNr = this.THEMES.indexOf(e.target.id);
         this.changeTheme(e.target.id);
+        selectedTheme.remove();
+        const themeChanger = document.querySelector('theme-changer');
+        this.themeChanger.insertBefore(selectedTheme, this.themeChanger.firstChild);
       }
+    });
+  };
+
+  addListenerMouseLeave = () => {
+    this.themeChanger.addEventListener("mouseleave", function(event) {
+      
+     event.target.scrollTop = 0;
+
     });
   };
 
