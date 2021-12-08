@@ -71,6 +71,7 @@ export default class ThemeChanger {
   addListener = () => {
     document.addEventListener("click", (e) => {
       if (e.target.name === "theme-radio") {
+
         // print index of clicked element
         this.themeNr = this.THEMES.indexOf(e.target.id);
         this.changeTheme(e.target.id);
@@ -78,11 +79,13 @@ export default class ThemeChanger {
         const selectedTheme = document.querySelector('#selected');
         selectedTheme.removeAttribute('id');
         e.target.parentElement.id ='selected'
+
       }
     });
   };
 
   addListenerMouseLeave = () => {
+
     this.themeChanger.addEventListener("mouseleave", function(event) {
       
       const selectedTheme = document.querySelector('#selected');
