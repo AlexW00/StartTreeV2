@@ -64,22 +64,24 @@ export default class ThemeChanger {
   addListener = () => {
     document.addEventListener("click", (e) => {
       if (e.target.name === "theme-radio") {
-        const selectedTheme = e.path[1];
+        const path = e.path || (e.composedPath && e.composedPath());
+        const selectedTheme = path[1];
         // print index of clicked element
         this.themeNr = this.THEMES.indexOf(e.target.id);
         this.changeTheme(e.target.id);
         selectedTheme.remove();
-        const themeChanger = document.querySelector('theme-changer');
-        this.themeChanger.insertBefore(selectedTheme, this.themeChanger.firstChild);
+        const themeChanger = document.querySelector("theme-changer");
+        this.themeChanger.insertBefore(
+          selectedTheme,
+          this.themeChanger.firstChild
+        );
       }
     });
   };
 
   addListenerMouseLeave = () => {
-    this.themeChanger.addEventListener("mouseleave", function(event) {
-      
-     event.target.scrollTop = 0;
-
+    this.themeChanger.addEventListener("mouseleave", function (event) {
+      event.target.scrollTop = 0;
     });
   };
 
