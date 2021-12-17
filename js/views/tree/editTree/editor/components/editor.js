@@ -89,7 +89,7 @@ export default class Editor {
 
     input.type = "text";
     input.value = this.link;
-    input.addEventListener("keydown", (e) => {
+    input.addEventListener("keyup", (e) => {
       this.link = input.value;
       if (e.keyCode === 13 && input === document.activeElement) {
         e.preventDefault();
@@ -108,7 +108,7 @@ export default class Editor {
 
     input.type = "text";
     input.value = this.text;
-    input.addEventListener("keydown", (e) => {
+    input.addEventListener("keyup", (e) => {
       this.text = input.value;
       if (e.keyCode === 13 && input === document.activeElement) {
         this.save(li.parentNode);
