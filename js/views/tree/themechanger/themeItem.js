@@ -7,14 +7,18 @@ export default class ThemeItem {
     "link[href='./styles/colors.css']"
   );
 
-  constructor(themeName) {
+  constructor(themeName,divId = null) {
     this.name = themeName;
+    this.divId = divId;
   }
 
   // returns a theme item html item
   html() {
     const div = document.createElement("div");
     const input = document.createElement("input");
+    if(this.divId !== null) {
+      div.id = this.divId;
+    }
     input.type = "radio";
     input.name = "theme-radio";
     input.id = this.name;

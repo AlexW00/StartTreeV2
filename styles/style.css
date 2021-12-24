@@ -569,7 +569,7 @@ input {
 }
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color6);
+  background: var(--color10);
 }
 .theme-changer:hover {
   height: 200px;
@@ -591,4 +591,15 @@ input {
 }
 .theme-changer label:hover {
   color: var(--color12);
+}
+.theme-changer-container input{
+  /* Note: opacity is used to hide the file input instead of visibility:
+   hidden or display: none, because assistive technology interprets the 
+   latter two styles to mean the file input isn't interactive. */
+  width: 0; 
+  opacity:0;
+}
+.theme-changer-container label[for="add-theme-input"]{
+  display:flex;
+  align-items: center;
 }
