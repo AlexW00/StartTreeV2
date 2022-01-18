@@ -26,6 +26,12 @@ export default class ThemeChanger {
     "tomorrow-night-eighties",
     "void",
     "water-fire",
+    "storm",
+    "gold-hunter",
+    "catalina",
+    "capitane",
+    "bigsur",
+    "monterey",
   ];
 
   themeCssLink = document.querySelector("link[href='../styles/colors.css']");
