@@ -28,7 +28,7 @@ export default class ThemeChanger {
     "water-fire",
     "storm",
     "gold-hunter",
-    "catalina",
+    "sierra",
     "capitane",
     "bigsur",
     "monterey",
