@@ -84,6 +84,11 @@ Click on the top right check button to **copy** and **go** to your new URL.
 </details>
 
 
+## Featured
+
+<a href="https://www.producthunt.com/posts/starttreev2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-starttreev2" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=327867&theme=dark" alt="StartTreeV2 - A $tree styled start page generator. | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+
+
 ## Development
 
 The current version is stable and tested in Firefox, Chrome and Safari.
