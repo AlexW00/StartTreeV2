@@ -32,6 +32,7 @@ export default class ThemeChanger {
     "capitane",
     "bigsur",
     "monterey",
+    "nord",
   ];
 
   themeCssLink = document.querySelector("link[href='../styles/colors.css']");
