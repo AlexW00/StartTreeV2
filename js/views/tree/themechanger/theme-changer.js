@@ -32,8 +32,8 @@ export default class ThemeChanger {
     "capitane",
     "bigsur",
     "monterey",
-    "MonokaiPro",
     "nord",
+    "MonokaiPro",
   ];
 
   themeCssLink = document.querySelector("link[href='../styles/colors.css']");
