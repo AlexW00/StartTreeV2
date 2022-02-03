@@ -1,0 +1,23 @@
+/* MonokaiPro for starttree */
+:root {
+    --background: #2D2A2E;
+    --foreground: #ebdbb2;
+    --cursor: #ff6188C;
+
+    --color0: #282828;
+    --color1: #689d6a;
+    --color2: #98971a;
+    --color3: #d79921;
+    --color4: #458588;
+    --color5: #FF6188;
+    --color6: #FC9867;
+    --color7: #a89984;
+    --color8: #928374;
+    --color9: #a9dc76;
+    --color10: #78DCE8;
+    --color11: #fabd2f;
+    --color12: #A9DC76;
+    --color13: #d3869b;
+    --color14: #8ec07c;
+    --color15: #ebdbb2;
+}
