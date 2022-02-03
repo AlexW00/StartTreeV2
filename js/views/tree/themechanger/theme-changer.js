@@ -32,6 +32,7 @@ export default class ThemeChanger {
     "capitane",
     "bigsur",
     "monterey",
+    "MonokaiPro",
     "nord",
   ];
 
