@@ -34,6 +34,7 @@ export default class ThemeChanger {
     "monterey",
     "nord",
     "MonokaiPro",
+    "Programiz",
   ];
 
   themeCssLink = document.querySelector("link[href='../styles/colors.css']");
