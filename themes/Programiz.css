@@ -1,0 +1,30 @@
+/* Programiz White theme for starttree */
+@import url('http://fonts.cdnfonts.com/css/euclid-circular-a?styles=100036');
+
+:root {
+    --background: #f9fafc;
+    --foreground: #ebdbb2;
+    --cursor: #ff6188C;
+
+    --color0: #282828;
+    --color1: #383B40;
+    --color2: #98971a;
+    --color3: #d79921;
+    --color4: #458588;
+    --color5: #0556f3;
+    --color6: #25265eb3;
+    --color7: #a89984;
+    --color8: #928374;
+    --color9: #c678dd;
+    --color10: #25265e;
+    --color11: #fabd2f;
+    --color12: #c678dd;
+    --color13: #d3869b;
+    --color14: #c678dd;
+    --color15: #ebdbb2;
+}
+
+* {
+    font-family: 'Euclid Circular A' !important;
+    ;
+}
