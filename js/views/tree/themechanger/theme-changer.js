@@ -13,6 +13,7 @@ export default class ThemeChanger {
     "carnival",
     "cotton-candy",
     "desert-sky",
+    "dracula",
     "ferns",
     "forest",
     "gruvbox",
