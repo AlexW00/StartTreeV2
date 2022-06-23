@@ -36,6 +36,7 @@ export default class ThemeChanger {
     "nord",
     "MonokaiPro",
     "Programiz",
+    "wal",
   ];
 
   themeCssLink = document.querySelector("link[href='../styles/colors.css']");
