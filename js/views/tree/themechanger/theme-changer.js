@@ -13,6 +13,7 @@ export default class ThemeChanger {
     "carnival",
     "cotton-candy",
     "desert-sky",
+    "dracula",
     "ferns",
     "forest",
     "gruvbox",
@@ -35,6 +36,7 @@ export default class ThemeChanger {
     "nord",
     "MonokaiPro",
     "Programiz",
+    "wal",
   ];
 
   themeCssLink = document.querySelector("link[href='../styles/colors.css']");
