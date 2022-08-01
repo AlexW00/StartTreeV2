@@ -24,7 +24,7 @@ export default class ThemeChanger {
     "orange-dark",
     "slick-red",
     "this-ones-good",
-    "tokyo-night"
+    "tokyo-night",
     "tomorrow-night-eighties",
     "void",
     "water-fire",
