@@ -94,6 +94,16 @@ Click on the top right check button to **copy** and **go** to your new URL.
 The current version is stable and tested in Firefox, Chrome and Safari.
 If you want to contribute, feel free to make a pull request. Please keep it simple and lightweight.
 
+<details>
+  <summary>Adding themes</summary>
+  
+  1. Create a new .css file in [/themes](https://github.com/AlexW00/StartTreeV2/tree/master/themes), which follows the same structure as the existing ones (most of them were generated using [Pywal](https://github.com/dylanaraps/pywal)).
+  
+  2. Add a new entry **at the end** of the `THEMES` array in [theme-changer.js](https://github.com/AlexW00/StartTreeV2/blob/master/js/views/tree/themechanger/theme-changer.js)
+  
+  3. (make a pull request)
+</details>
+
 ## Credits
 
 StartTreeV2 is based on a static website generated using [StartTree](https://github.com/Paul-Houser/StartTree). Huge Thanks @Paul-Houser for creating such an awesome project!
