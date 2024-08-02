@@ -32,7 +32,7 @@ Click the (+) buttons to add new elements:
 
 <details>
   <summary> Search engine URLs</summary>
-  Google search url: <code>http://www.google.com/search?q=</code><br/>
+  Google search url: <code>https://www.google.com/search?q=</code><br/>
   DuckDuckGo search url: <code>https://duckduckgo.com/?q=</code>
 </details>
   
