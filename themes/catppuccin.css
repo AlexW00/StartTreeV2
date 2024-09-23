@@ -1,0 +1,22 @@
+:root {
+    --background: #1e1e2e;
+    --foreground: #cdd6f4;
+    --cursor: #cdd6f4;
+
+    --color0: #1e1e2e;
+    --color1: #181825;
+    --color2: #313244;
+    --color3: #45475a;
+    --color4: #585b70;
+    --color5: #cdd6f4;
+    --color6: #f5e0dc;
+    --color7: #b4befe;
+    --color8: #f38ba8;
+    --color9: #fab387;
+    --color10: #f0e2af;
+    --color11: #a6e3a1;
+    --color12: #94e2d5;
+    --color13: #89b4fa;
+    --color14: #cba6f7;
+    --color15: #f2cdcd;
+}

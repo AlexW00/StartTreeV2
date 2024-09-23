@@ -35,7 +35,8 @@ export default class ThemeChanger {
     "nord",
     "MonokaiPro",
     "Programiz",
-    "autumn-mech"
+    "autumn-mech",
+    "catppuccin"
   ];
 
   themeCssLink = document.querySelector("link[href='../styles/colors.css']");
